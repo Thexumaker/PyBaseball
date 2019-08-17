@@ -1,8 +1,8 @@
-import requests
 from datetime import datetime
-
 import requests
 import constants
+import paths
+PATHS = paths.PATHS
 d = {}
 players = {}
 ##If teamids is empty get all teams with their ids
@@ -49,6 +49,64 @@ def getInfo(name):
         r.append(requests.get(r_url).json()["people"][0][arg])
     return r
 
+def get(path, dict_params):
+    curr = PATHS.get(path)
+    url = curr['url']
+    path_params = {}
+    query_params = {}
+    #search through the dictionary of params, categorize what kind of parameter, make sure they exist and then replace them in the url
+    for k,v in dict_params.items():
+        if curr['path_params'].get(k):
+            path_params.update({k:str(v)})
+            print(path_params)
+        elif k in curr['query_params']:
+            query_params.update({k:str(v)})
+            print(query_params)
+        else:
+            break;
+    for s,t in path_params.items():
+        print(path_params)
+        url = url.replace("{{{}}}".format(s),t)
+    while url.find('{') != -1:
+        start_index = url.find('{')
+
+
+        end_index = url.find('}')
+        param = url[start_index:end_index+1]
+        param_without_brackets = url[start_index+1:end_index]
+        if param_without_brackets not in curr['required_params']:
+            url = url.replace("/" +param, '')
+
+
+        elif param_without_brackets in curr['required_params']:
+            #doesn't work
+            print('dick')
+    if len(query_params) > 0:
+        for k,v in query_params.items():
+            sep = '?' if url.find('?') == -1 else '&'
+            url += sep + k + "=" + v
+    #Make sure required parameters are present
+    satisfied = False
+    missing_params = []
+    for x in curr.get('required_params',[]):
+        if len(x) == 0: satisfied = True
+        else:
+            missing_params.extend([a for a in x if a not in query_params])
+            if len(missing_params) == 0:
+                satisfied = True
+                break
+    r = requests.get(url)
+    print(url)
+    return r
+
+
+
+
+
+
+
+
+
 getTeamIds()
 
 getPlayerList()
@@ -56,3 +114,4 @@ print(len(players))
 #print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 
 print(getInfo("Matt Chapman"))
+print(get("team", {'ver': 'v1', 'teamIds': 119}))
