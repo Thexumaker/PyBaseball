@@ -99,14 +99,6 @@ def get(path, dict_params):
     print(url)
     return r
 
-
-
-
-
-
-
-
-
 getTeamIds()
 
 getPlayerList()
