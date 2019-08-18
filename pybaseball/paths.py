@@ -44,10 +44,10 @@ PATHS = {
 
     },
     "config": {
-                'url': BASE_URL + "/{ver}/{baseballStats}/{eventTypes}/{fielderDetailTypes}/{gameStatus}/{gameTypes}/{hitTrajectories}/{jobTypes}/ \
-                {languages}/{leagueLeaderTypes}/{logicalEvents}/{metrics}/{pitchCodes}/{pitchTypes}/{platforms}/{playerStatusCodes}/{positions}/ \
-                {reviewReasons}/{rosterTypes}/{runnerDetailTypes}/{scheduleEventTypes}/{situationCodes}/{sky}/{standingsTypes}/{statGroups}/{statTypes}/ \
-                {windDirection}",
+                'url': BASE_URL + "/{ver}/{baseballStats}/{eventTypes}/{fielderDetailTypes}/{gameStatus}/{gameTypes}/{hitTrajectories}/{jobTypes}/\
+{languages}/{leagueLeaderTypes}/{logicalEvents}/{metrics}/{pitchCodes}/{pitchTypes}/{platforms}/{playerStatusCodes}/{positions}/\
+{reviewReasons}/{rosterTypes}/{runnerDetailTypes}/{scheduleEventTypes}/{situationCodes}/{sky}/{standingsTypes}/{statGroups}/{statTypes}/\
+{windDirection}",
                 "path_params": {
                                 "ver": {
                                         "required": True,
@@ -176,6 +176,18 @@ PATHS = {
 
 
 
-            }
+            },
+            'people':                       {
+                                                    'url': BASE_URL + '/{ver}/people',
+                                                    'path_params':  {
+                                                                        'ver':      {
+
+                                                                                        'default': 'v1',
+                                                                                        'required': True
+                                                                                    }
+                                                                    },
+                                                    'query_params': ['personIds','fields'],
+                                                    'required_params': [['personIds']]
+                                                },
 
     }
