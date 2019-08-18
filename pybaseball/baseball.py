@@ -7,6 +7,7 @@ d = {}
 players = {}
 ##If teamids is empty get all teams with their ids
 def getTeamIds():
+
     with open("TeamID.txt") as f:
         for line in f:
             (key, val) = line.split()
@@ -50,6 +51,7 @@ def getInfo(name):
     return r
 
 def get(path, dict_params):
+    """Return the square root of self times self."""
     curr = PATHS.get(path)
     url = curr['url']
     path_params = {}
@@ -91,10 +93,17 @@ def get(path, dict_params):
     for x in curr.get('required_params',[]):
         if len(x) == 0: satisfied = True
         else:
-            missing_params.extend([a for a in x if a not in query_params])
+            for i in x:
+                if path_params.get(i) or query_params.get(i):
+                    break
+                else:
+                    satisfied= False
             if len(missing_params) == 0:
                 satisfied = True
                 break
+    if satisfied is False:
+        return "Broken"
+
     r = requests.get(url)
     print(url)
     return r
