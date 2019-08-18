@@ -4,6 +4,7 @@
 
 **Merged pull requests:**
 
+- v0.0.1 \(2019-08-17\) [\#2](https://github.com/Thexumaker/PyBaseball/pull/2) ([Thexumaker](https://github.com/Thexumaker))
 - Create LICENSE [\#1](https://github.com/Thexumaker/PyBaseball/pull/1) ([Thexumaker](https://github.com/Thexumaker))
 
 
