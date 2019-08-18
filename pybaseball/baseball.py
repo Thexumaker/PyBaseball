@@ -140,15 +140,12 @@ getTeamIds()
 
 getPlayerList()
 print(len(players))
-<<<<<<< HEAD
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 
 #`print(getInfo("Matt Chapman"))
 print(getPlayer("Matt Chapman",["currentAge", "primaryPosition"]))
 #print(get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'}))
-=======
+
 #print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 print("okkkk")
 print(getInfo("Matt Chapman"))
-print(get("team", {'ver': 'v1', 'teamIds': 119}))
->>>>>>> c09f785a32171cb062331e98ec1cd12acdcaa0d3

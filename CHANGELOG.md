@@ -4,6 +4,8 @@
 
 **Merged pull requests:**
 
+- v0.0.3\(2019-08-19\) [\#8](https://github.com/Thexumaker/PyBaseball/pull/8) ([Thexumaker](https://github.com/Thexumaker))
+- deleted several unrelated files [\#4](https://github.com/Thexumaker/PyBaseball/pull/4) ([Thexumaker](https://github.com/Thexumaker))
 - added following paths: [\#3](https://github.com/Thexumaker/PyBaseball/pull/3) ([Thexumaker](https://github.com/Thexumaker))
 - v0.0.1 \(2019-08-17\) [\#2](https://github.com/Thexumaker/PyBaseball/pull/2) ([Thexumaker](https://github.com/Thexumaker))
 - Create LICENSE [\#1](https://github.com/Thexumaker/PyBaseball/pull/1) ([Thexumaker](https://github.com/Thexumaker))
