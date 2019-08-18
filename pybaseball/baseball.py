@@ -113,6 +113,6 @@ getTeamIds()
 getPlayerList()
 print(len(players))
 #print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
-
+print("okkkk")
 print(getInfo("Matt Chapman"))
 print(get("team", {'ver': 'v1', 'teamIds': 119}))
