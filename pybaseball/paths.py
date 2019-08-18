@@ -205,19 +205,25 @@ PATHS = {
                 'required': True
             }
         },
-        'query_params': ['stats', 'playerPool', 'position', 'teamId', 'leagueId', 'limit', 'offset', 'group', 'gameType', 'season', 'sportIds', 'sortStat', 'order', , 'fields'],
+        'query_params': ['stats', 'playerPool', 'position', 'teamId', 'leagueId', 'limit', 'offset', 'group', 'gameType', 'season', 'sportIds', 'sortStat', 'order',  'fields'],
         'required_params': [['stats', 'group']]
     },
 
     'stats_leaders': {
-        'url': BASE_URL + '{ver}/stats/leaders',
-        'path_params':  {
-            'ver':      {
+                                                    'url': BASE_URL + '{ver}/stats/leaders',
+                                                    'path_params':  {
+                                                                        'ver':      {
 
-                'default': 'v1',
+                                                                                        'default': 'v1',
 
-            },
-            'people':                       {
+                                                                                        'required': True
+                                                                                    }
+                                                                    },
+                                                    'query_params': ['leaderCategories','playerPool','leaderGameTypes','statGroup','season','leagueId','sportId','hydrate','limit','fields','statType'],
+                                                    'required_params': [['leaderCategories']],
+
+                                                },
+    'people':{
                                                     'url': BASE_URL + '/{ver}/people',
                                                     'path_params':  {
                                                                         'ver':      {
@@ -231,5 +237,3 @@ PATHS = {
                                                 },
 
     }
-
-}
