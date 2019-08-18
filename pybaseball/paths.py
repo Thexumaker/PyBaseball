@@ -143,6 +143,23 @@ PATHS = {
 
 
     },
+    "divisions": {
+                "url": BASE_URL + "/{ver}/divisions",
+                'path_params': {
+                                "ver" : {
+                                        "required": True,
+                                        "default": "v1"
+
+                                }
+
+                },
+                "query_params": ['divisionId', 'includeInactive', 'leagueID', 'sportId', 'fields'],
+                'required_params': [[]]
+
+},
+
+
+
     "team": {
             'url': BASE_URL + "/{ver}/teams",
             "path_params":{
