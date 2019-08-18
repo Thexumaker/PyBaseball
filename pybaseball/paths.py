@@ -1,45 +1,45 @@
 BASE_URL = "http://statsapi.mlb.com/api"
-#double check the documentation Slater
-#takes time to load, but paths /path = number, players is a little weird where u only write hte number
-#querys usually ? and then same format, nust have to work thru it
-#keep the functions i made i dont feel like fixing it and it really doesnt need to be put in
+# double check the documentation Slater
+# takes time to load, but paths /path = number, players is a little weird where u only write hte number
+# querys usually ? and then same format, nust have to work thru it
+# keep the functions i made i dont feel like fixing it and it really doesnt need to be put in
 PATHS = {
     "attendance": {
-                    'url': BASE_URL + "/{ver}/attendance",
-                    "path_params":{
-                                    "ver": {
-                                            "required": True,
-                                            "default": "v1"
-                                    }
+        'url': BASE_URL + "/{ver}/attendance",
+        "path_params": {
+            "ver": {
+                "required": True,
+                "default": "v1"
+            }
 
-                    },
-                    "query_params":['teamId', 'leagueID', 'season', 'leagueListID', 'gameType', 'startDate', 'endDate', 'fields'],
-                    'required_params':[['teamID', 'leagueID', 'leagueListID']]
+        },
+        "query_params": ['teamId', 'leagueID', 'season', 'leagueListID', 'gameType', 'startDate', 'endDate', 'fields'],
+        'required_params': [['teamID', 'leagueID', 'leagueListID']]
 
 
 
 
     },
     "awards": {
-                'url': BASE_URL + "/{ver}/awards/{awardId}/{recipients}",
-                "path_params": {
-                                "ver": {
-                                        "required": True,
-                                        "default": "v1"
-                                },
-                                "awardId": {
-                                            "required": False,
-                                            "default": None
-                                },
-                                "recipients": {
-                                                "required:False"
-                                                "default": None
-                                }
+        'url': BASE_URL + "/{ver}/awards/{awardId}/{recipients}",
+        "path_params": {
+            "ver": {
+                "required": True,
+                "default": "v1"
+            },
+            "awardId": {
+                "required": False,
+                "default": None
+            },
+            "recipients": {
+                "required:False"
+                "default": None
+            }
 
 
-                },
-                'query_params':['orgId', 'fields'],
-                'required_params':[[]]
+        },
+        'query_params': ['orgId', 'fields'],
+        'required_params': [[]]
 
 
     },
@@ -144,37 +144,77 @@ PATHS = {
 
     },
     "divisions": {
-                "url": BASE_URL + "/{ver}/divisions",
-                'path_params': {
-                                "ver" : {
-                                        "required": True,
-                                        "default": "v1"
+        "url": BASE_URL + "/{ver}/divisions",
+        'path_params': {
+            "ver": {
+                "required": True,
+                "default": "v1"
 
-                                }
+            }
 
-                },
-                "query_params": ['divisionId', 'includeInactive', 'leagueID', 'sportId', 'fields'],
-                'required_params': [[]]
+        },
+        "query_params": ['divisionId', 'includeInactive', 'leagueID', 'sportId', 'fields'],
+        'required_params': [[]]
 
-},
-
-
-
-    "team": {
-            'url': BASE_URL + "/{ver}/teams",
-            "path_params":{
-                            "ver" : {
-                                    "required": True,
-                                    "default": "v1"
-
-                            }
+    },
+    "draft": {
+        'url': BASE_URL + "/{ver}/draft/{year}",
+        'path_params': {
+            "ver": {
+                "required": True,
+                "default": "v1"
 
             },
-            "query_params": ['teamIds','startSeason','endSeason','fields'],
-            "required_params": [['teamIds']]
+            'year': {
+                'required': True,
+                'default': 2019
 
+            },
+            'query_params': ['limit', 'fields', 'order', 'round', 'name', 'position', 'team', 'teamId', 'state', 'country', 'playerId', 'bisPlayerId'],
+            'required_params': [['year']]
 
+        },
 
+    },
+    "prospects": {
+        'url': BASE_URL + "/{ver}/draft/prospects/{year}",
+        'path_params': {
+            "ver": {
+                "required": True,
+                "default": "v1"
+
+            },
+            'year': {
+                'required': True,
+                'default': 2019
+
+            },
+            'query_params': ['limit', 'fields', 'order', 'round', 'name', 'position', 'team', 'teamId', 'state', 'country', 'playerId', 'bisPlayerId'],
+            'required_params': [['year']]
+
+        }
+
+    },
+    'stats':                        {
+        'url': BASE_URL + '{ver}/stats',
+        'path_params':  {
+            'ver':      {
+
+                'default': 'v1',
+
+                'required': True
+            }
+        },
+        'query_params': ['stats', 'playerPool', 'position', 'teamId', 'leagueId', 'limit', 'offset', 'group', 'gameType', 'season', 'sportIds', 'sortStat', 'order', , 'fields'],
+        'required_params': [['stats', 'group']]
+    },
+
+    'stats_leaders': {
+        'url': BASE_URL + '{ver}/stats/leaders',
+        'path_params':  {
+            'ver':      {
+
+                'default': 'v1',
 
             },
             'people':                       {
@@ -191,3 +231,5 @@ PATHS = {
                                                 },
 
     }
+
+}
