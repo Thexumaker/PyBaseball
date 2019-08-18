@@ -51,6 +51,7 @@ def getPlayer(name, args):
     for arg in args:
         r.append(r_url["people"][0][arg])
     return r
+    #done`
 
 
 
@@ -68,7 +69,10 @@ def get(path, dict_params):
     """Main get function that given a dictionary of inputs and a path will return the correct results
     Example:
     get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'})"""
+    print(path)
+    print(dict_params)
     curr = PATHS.get(path)
+    print(curr)
     url = curr['url']
     path_params = {}
     query_params = {}
@@ -140,15 +144,13 @@ getTeamIds()
 
 getPlayerList()
 print(len(players))
-<<<<<<< HEAD
+
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 
 #`print(getInfo("Matt Chapman"))
 print(getPlayer("Matt Chapman",["currentAge", "primaryPosition"]))
 #print(get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'}))
-=======
+
 #print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
-print("okkkk")
-print(getInfo("Matt Chapman"))
-print(get("team", {'ver': 'v1', 'teamIds': 119}))
->>>>>>> c09f785a32171cb062331e98ec1cd12acdcaa0d3
+
+#print(getInfo("Matt Chapman"))
