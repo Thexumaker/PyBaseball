@@ -235,6 +235,19 @@ PATHS = {
 <<<<<<< HEAD
                                                     'note': 'If excluding season parameter to get all time leaders, include statType=statsSingleSeason or you will likely not get any results.'
                                                 },
+    'stats_streaks':                {
+                                                    'url': BASE_URL + '/{ver}/stats/streaks',
+                                                    'path_params':  {
+                                                                        'ver':      {
+
+                                                                                        'default': 'v1',
+                                                                                        'required': True
+                                                                                    }
+                                                                    },
+                                                    'query_params': ['streakType','streakSpan','gameType','season','sportId','limit','fields'],
+                                                    'required_params': [['streakType','streakSpan','season']],
+                                                    #'note': 'Valid streakType values: "hittingStreakOverall" "hittingStreakHome" "hittingStreakAway" "onBaseOverall" "onBaseHome" "onBaseAway". Valid streakSpan values: "career" "season" "currentStreak" "currentStreakInSeason" "notable" "notableInSeason".'
+                                                },
     'people':                       {
 =======
 

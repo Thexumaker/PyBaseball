@@ -42,6 +42,9 @@ def getPlayerList():
 # More or less works
 
 
+<<<<<<< HEAD
+
+=======
 def getPlayer(name, args):
     """A function to return the age, position and player id of a given player name"""
     r = []
@@ -52,6 +55,7 @@ def getPlayer(name, args):
         r.append(r_url["people"][0][arg])
     return r
     #done`
+>>>>>>> master
 
 
 
@@ -63,7 +67,23 @@ def getInfo(name):
     for arg in args:
         r.append(requests.get(r_url).json()["people"][0][arg])
     return r
+#Stuff good
+def getAttendance(tId,args):
+    print(tId)
+    result = get('attendance', {'ver': 'v1','teamId': tId})
+    return result
 
+
+
+def getPlayer(name, args):
+    """A function to return the age, position and player id of a given player name"""
+    r = []
+    ids = players[name]
+    r_url = get('people', {'personIds':ids, 'ver': 'v1'})
+    #constants.BASE_URL + "/people/{}".format(ids)
+    for arg in args:
+        r.append(r_url["people"][0][arg])
+    return r
 
 def get(path, dict_params):
     """Main get function that given a dictionary of inputs and a path will return the correct results
@@ -76,6 +96,7 @@ def get(path, dict_params):
     url = curr['url']
     path_params = {}
     query_params = {}
+    print(dict_params)
     # search through the dictionary of params, categorize what kind of parameter, make sure they exist and then replace them in the url
     for k, v in dict_params.items():
         if curr['path_params'].get(k):
@@ -83,9 +104,9 @@ def get(path, dict_params):
             print(path_params)
         elif k in curr['query_params']:
             query_params.update({k: str(v)})
-            print(query_params)
         else:
             break
+    print(query_params)
     for s, t in path_params.items():
 
         url = url.replace("{{{}}}".format(s), t)
@@ -108,7 +129,6 @@ def get(path, dict_params):
             break
 
     if len(query_params) > 0:
-        print("QUCDWVCEVCWVW")
 
         for k, v in query_params.items():
             sep = '?' if url.find('?') == -1 else '&'
@@ -143,18 +163,29 @@ def get(path, dict_params):
 getTeamIds()
 
 getPlayerList()
+<<<<<<< HEAD
+
+=======
 print(len(players))
 <<<<<<< HEAD
 =======
 
 >>>>>>> bea26f18282da2b73a735c15e4c9576fb4a6a3c7
+>>>>>>> master
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 
 #`print(getInfo("Matt Chapman"))
-print(getPlayer("Matt Chapman",["currentAge", "primaryPosition"]))
+
+#IMPORTNAT
+#print(getPlayer("Matt Chapman",["currentAge", "primaryPosition"]))
+
+#END
 #print(get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'}))
 
 #print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
+<<<<<<< HEAD
+print(getAttendance('133',['hi']))
+=======
 <<<<<<< HEAD
 print("okkkk")
 print(getInfo("Matt Chapman"))
@@ -162,3 +193,4 @@ print(getInfo("Matt Chapman"))
 
 #print(getInfo("Matt Chapman"))
 >>>>>>> bea26f18282da2b73a735c15e4c9576fb4a6a3c7
+>>>>>>> master
