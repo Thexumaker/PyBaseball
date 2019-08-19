@@ -60,7 +60,11 @@ def getAttendance(Id,params,fields):
     -Id Required: LeagueId, TeamId, LeagueListID
         - just one of them
     -params: 'season', 'gameType', 'startDate', 'endDate'
+<<<<<<< HEAD
     -fields stills working on
+=======
+    -fields still working on
+>>>>>>> 0b139515dadf3e558bdf617fed67c79175ccd0ae
     """
     qP = {'ver': 'v1','teamId': Id}
     for k,v in params.items():
