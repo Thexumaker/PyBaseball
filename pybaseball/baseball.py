@@ -42,7 +42,20 @@ def getPlayerList():
 # More or less works
 
 
+<<<<<<< HEAD
 
+=======
+def getPlayer(name, args):
+    """A function to return the age, position and player id of a given player name"""
+    r = []
+    ids = players[name]
+    r_url = get('people', {'personIds':ids, 'ver': 'v1'})
+    #constants.BASE_URL + "/people/{}".format(ids)
+    for arg in args:
+        r.append(r_url["people"][0][arg])
+    return r
+    #done`
+>>>>>>> master
 
 
 
@@ -76,7 +89,10 @@ def get(path, dict_params):
     """Main get function that given a dictionary of inputs and a path will return the correct results
     Example:
     get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'})"""
+    print(path)
+    print(dict_params)
     curr = PATHS.get(path)
+    print(curr)
     url = curr['url']
     path_params = {}
     query_params = {}
@@ -147,7 +163,15 @@ def get(path, dict_params):
 getTeamIds()
 
 getPlayerList()
+<<<<<<< HEAD
 
+=======
+print(len(players))
+<<<<<<< HEAD
+=======
+
+>>>>>>> bea26f18282da2b73a735c15e4c9576fb4a6a3c7
+>>>>>>> master
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 
 #`print(getInfo("Matt Chapman"))
@@ -159,4 +183,14 @@ getPlayerList()
 #print(get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'}))
 
 #print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
+<<<<<<< HEAD
 print(getAttendance('133',['hi']))
+=======
+<<<<<<< HEAD
+print("okkkk")
+print(getInfo("Matt Chapman"))
+=======
+
+#print(getInfo("Matt Chapman"))
+>>>>>>> bea26f18282da2b73a735c15e4c9576fb4a6a3c7
+>>>>>>> master
