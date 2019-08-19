@@ -136,10 +136,14 @@ def get(path, dict_params):
             print(fields)
             fsep = '?' if url.find('?') == -1 else '&'
             url += fsep + k + "="
+            fields_size = len(fields)
+            counter = 1
             for f in fields:
-
-                qurl = f + "%2c"
+                sep = '%2c' if counter < fields_size else ''
+                counter +=1
+                qurl = f + sep
                 url +=qurl
+
 
 
     # Make sure required parameters are present
