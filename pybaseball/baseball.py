@@ -71,15 +71,14 @@ def getAttendance(Id,params,fields):
 
 
 
-def getPlayer(name, args):
+def getPlayer(name):
     """A function to return the age, position and player id of a given player name"""
     r = []
     ids = players[name]
-    r_url = get('people', {'personIds':ids, 'ver': 'v1'})
+    r_url = get('people', {'personIds':ids, 'ver': 'v1', 'fields':['people','id']})
     #constants.BASE_URL + "/people/{}".format(ids)
-    for arg in args:
-        r.append(r_url["people"][0][arg])
-    return r
+
+    return r_url
 
 def get(path, dict_params):
     """Main get function that given a dictionary of inputs and a path will return the correct results
@@ -89,6 +88,8 @@ def get(path, dict_params):
     url = curr['url']
     path_params = {}
     query_params = {}
+    fields = []
+    first_field = True
     print(dict_params)
     # search through the dictionary of params, categorize what kind of parameter, make sure they exist and then replace them in the url
     for k, v in dict_params.items():
@@ -96,7 +97,8 @@ def get(path, dict_params):
             path_params.update({k: str(v)})
             print(path_params)
         elif k in curr['query_params']:
-            query_params.update({k: str(v)})
+            query_params.update({k: v})
+            #DEBUG RIGHT HERe
         else:
             break
     print(query_params)
@@ -122,10 +124,24 @@ def get(path, dict_params):
             break
 
     if len(query_params) > 0:
-
         for k, v in query_params.items():
-            sep = '?' if url.find('?') == -1 else '&'
-            url += sep + k + "=" + v
+            if k == 'fields':
+                fields.extend(v)
+            else:
+                sep = '?' if url.find('?') == -1 else '&'
+                v = str(v)
+                url += sep + k + "=" + v
+        #For if fields in the query
+        if(len(fields) > 0):
+            print(fields)
+            fsep = '?' if url.find('?') == -1 else '&'
+            url += fsep + k + "="
+            for f in fields:
+
+                qurl = f + "%2c"
+                url +=qurl
+
+
     # Make sure required parameters are present
     print(url)
     satisfied = False
@@ -162,10 +178,10 @@ getPlayerList()
 #`print(getInfo("Matt Chapman"))
 
 #IMPORTNAT
-#print(getPlayer("Matt Chapman",["currentAge", "primaryPosition"]))
+print(getPlayer("Justin Verlander"))
 
 #END
 #print(get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'}))
 
 #print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
-print(getAttendance('133',{'season':2017}, 'dick'))
+#print(getAttendance('133',{'season':2017}, 'dick'))
