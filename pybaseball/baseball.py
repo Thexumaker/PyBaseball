@@ -55,9 +55,17 @@ def getInfo(name):
         r.append(requests.get(r_url).json()["people"][0][arg])
     return r
 #Stuff good
-def getAttendance(tId,args):
-    print(tId)
-    result = get('attendance', {'ver': 'v1','teamId': tId})
+def getAttendance(Id,params,fields):
+    """Returns Attendance stats
+    -Id Required: LeagueId, TeamId, LeagueListID
+        - just one of them
+    -params: 'season', 'gameType', 'startDate', 'endDate'
+    -fields stills working on
+    """
+    qP = {'ver': 'v1','teamId': Id}
+    for k,v in params.items():
+        qP.update({k:v})
+    result = get('attendance',qP)
     return result
 
 
@@ -159,4 +167,4 @@ getPlayerList()
 #print(get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'}))
 
 #print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
-print(getAttendance('133',['hi']))
+print(getAttendance('133',{'season':2017}, 'dick'))
