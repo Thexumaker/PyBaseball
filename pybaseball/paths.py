@@ -195,6 +195,19 @@ PATHS = {
         }
 
     },
+    'standings':                    {
+                                                    'url': BASE_URL + '{ver}/standings',
+                                                    'path_params':  {
+                                                                        'ver':      {
+
+                                                                                        'default': 'v1',
+                                                                                        'required': True
+                                                                                    }
+                                                                    },
+                                                    'query_params': ['leagueId','season','standingsTypes','date','fields'],
+                                                    'required_params': [['leagueId']]
+                                                },
+
     'stats':                        {
         'url': BASE_URL + '{ver}/stats',
         'path_params':  {
@@ -209,7 +222,6 @@ PATHS = {
         'required_params': [['stats', 'group']]
     },
 
-<<<<<<< HEAD
     'stats_leaders':                {
                                                     'url': BASE_URL + '{ver}/stats/leaders',
                                                     'path_params':  {
@@ -218,21 +230,11 @@ PATHS = {
                                                                                         'default': 'v1',
                                                                                         'leading_slash': False,
                                                                                         'trailing_slash': False,
-=======
-    'stats_leaders': {
-                                                    'url': BASE_URL + '{ver}/stats/leaders',
-                                                    'path_params':  {
-                                                                        'ver':      {
-
-                                                                                        'default': 'v1',
-
->>>>>>> bea26f18282da2b73a735c15e4c9576fb4a6a3c7
                                                                                         'required': True
                                                                                     }
                                                                     },
                                                     'query_params': ['leaderCategories','playerPool','leaderGameTypes','statGroup','season','leagueId','sportId','hydrate','limit','fields','statType'],
                                                     'required_params': [['leaderCategories']],
-<<<<<<< HEAD
                                                     'note': 'If excluding season parameter to get all time leaders, include statType=statsSingleSeason or you will likely not get any results.'
                                                 },
     'stats_streaks':                {
@@ -249,11 +251,6 @@ PATHS = {
                                                     #'note': 'Valid streakType values: "hittingStreakOverall" "hittingStreakHome" "hittingStreakAway" "onBaseOverall" "onBaseHome" "onBaseAway". Valid streakSpan values: "career" "season" "currentStreak" "currentStreakInSeason" "notable" "notableInSeason".'
                                                 },
     'people':                       {
-=======
-
-                                                },
-    'people':{
->>>>>>> bea26f18282da2b73a735c15e4c9576fb4a6a3c7
                                                     'url': BASE_URL + '/{ver}/people',
                                                     'path_params':  {
                                                                         'ver':      {
