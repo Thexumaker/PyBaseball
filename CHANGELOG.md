@@ -4,6 +4,8 @@
 
 **Merged pull requests:**
 
+- v0.0.6 [\#11](https://github.com/Thexumaker/PyBaseball/pull/11) ([Thexumaker](https://github.com/Thexumaker))
+- fixed getAttendance [\#10](https://github.com/Thexumaker/PyBaseball/pull/10) ([Thexumaker](https://github.com/Thexumaker))
 - Get attendance [\#9](https://github.com/Thexumaker/PyBaseball/pull/9) ([Thexumaker](https://github.com/Thexumaker))
 - v0.0.3\(2019-08-19\) [\#8](https://github.com/Thexumaker/PyBaseball/pull/8) ([Thexumaker](https://github.com/Thexumaker))
 - deleted several unrelated files [\#4](https://github.com/Thexumaker/PyBaseball/pull/4) ([Thexumaker](https://github.com/Thexumaker))
