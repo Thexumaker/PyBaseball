@@ -3,10 +3,14 @@ import requests
 import constants
 import paths
 PATHS = paths.PATHS
+from datetime import datetime, date
+
 d = {}
 players = {}
 # If teamids is empty get all teams with their ids
+currentDate = date.today()
 
+today = currentDate.strftime('%m/%d/%Y')
 
 def getTeamIds():
 
@@ -41,11 +45,9 @@ def getPlayerList():
 # return whatever the user wants
 # More or less works
 
-
-
-
-
-
+def latestGamePack(team):
+    lgr= get('schedule', {'ver':'v1', 'sportId':1, 'date':today, 'teamId':team, 'fields':['dates','games','gamePk'] })
+    return lgr['dates'][0]['games'][0]['gamePk']
 def getInfo(name):
     r = []
     args = ["currentAge", "primaryPosition", "id"]
@@ -54,8 +56,10 @@ def getInfo(name):
     for arg in args:
         r.append(requests.get(r_url).json()["people"][0][arg])
     return r
-#Stuff good
-def getAttendance(Id,params,fields):
+# Stuff good
+
+
+def getAttendance(Id, params, fields):
     """Returns Attendance stats
     -Id Required: LeagueId, TeamId, LeagueListID
         - just one of them
@@ -63,22 +67,23 @@ def getAttendance(Id,params,fields):
     -fields stills working on
     -ok
     """
-    qP = {'ver': 'v1','teamId': Id}
-    for k,v in params.items():
-        qP.update({k:v})
-    result = get('attendance',qP)
+    qP = {'ver': 'v1', 'teamId': Id}
+    for k, v in params.items():
+        qP.update({k: v})
+    result = get('attendance', qP)
     return result
-
 
 
 def getPlayer(name):
     """A function to return the age, position and player id of a given player name"""
     r = []
     ids = players[name]
-    r_url = get('people', {'personIds':ids, 'ver': 'v1', 'fields':['people','id']})
+    r_url = get('people', {'personIds': ids,
+                           'ver': 'v1', 'fields': ['people', 'id']})
     #constants.BASE_URL + "/people/{}".format(ids)
 
     return r_url
+
 
 def get(path, dict_params):
     """Main get function that given a dictionary of inputs and a path will return the correct results
@@ -98,7 +103,7 @@ def get(path, dict_params):
             print(path_params)
         elif k in curr['query_params']:
             query_params.update({k: v})
-            #DEBUG RIGHT HERe
+            # DEBUG RIGHT HERe
         else:
             break
     print(query_params)
@@ -107,7 +112,7 @@ def get(path, dict_params):
         url = url.replace("{{{}}}".format(s), t)
     print("broke here")
     while url.find('{') != -1:
-        #so if u put in the wrong shit it repeats endlessly
+        # so if u put in the wrong shit it repeats endlessly
         print(url)
         start_index = url.find('{')
 
@@ -131,7 +136,7 @@ def get(path, dict_params):
                 sep = '?' if url.find('?') == -1 else '&'
                 v = str(v)
                 url += sep + k + "=" + v
-        #For if fields in the query
+        # For if fields in the query
         if(len(fields) > 0):
             print(fields)
             fsep = '?' if url.find('?') == -1 else '&'
@@ -140,11 +145,9 @@ def get(path, dict_params):
             counter = 1
             for f in fields:
                 sep = '%2c' if counter < fields_size else ''
-                counter +=1
+                counter += 1
                 qurl = f + sep
-                url +=qurl
-
-
+                url += qurl
 
     # Make sure required parameters are present
     print(url)
@@ -179,13 +182,14 @@ getPlayerList()
 
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 
-#`print(getInfo("Matt Chapman"))
+# `print(getInfo("Matt Chapman"))
 
-#IMPORTNAT
+# IMPORTNAT
 print(getPlayer("Justin Verlander"))
+print(latestGamePack(117))
 
-#END
+# END
 #print(get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'}))
 
-#print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
+# print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 #print(getAttendance('133',{'season':2017}, 'dick'))

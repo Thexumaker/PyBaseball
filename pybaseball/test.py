@@ -1,5 +1,6 @@
 import requests
 import constants
+from datetime import datetime, date
 #print(requests.get("https://statsapi.mlb.com/api/v1/awards/MLBHOF/recipients").json())
 dick = 69
 stuff = [['id','id2','id3'], ['is'], ['stuff']]
@@ -12,3 +13,8 @@ for x in stuff:
     print("/n")
     a.extend([a for a in x if a not in query_params])
     print(a)
+
+currentDate = date.today()
+
+today = currentDate.strftime('%m/%d/%Y')
+print(today)
