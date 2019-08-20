@@ -9,10 +9,10 @@ Right now i have the main get function and working on the paths
 
 # Working functions
 
-* `latestGamePack()'
+* `latestGamePack()`
 
-* 'getAttendance()'
+* `getAttendance()`
 
-* 'getPlayer()'
+* `getPlayer()`
 
-* 'get()'
+* `get()`
