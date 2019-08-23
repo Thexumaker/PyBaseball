@@ -13,7 +13,7 @@ PATHS = {
             }
 
         },
-        "query_params": ['teamId', 'leagueID', 'season', 'leagueListID', 'gameType', 'startDate', 'endDate', 'fields'],
+        "query_params": ['teamId', 'leagueID', 'season', 'leagueListID', 'gameType', 'startDate', 'endDate', 'fields', 'hydrate'],
         'required_params': [['teamID', 'leagueID', 'leagueListID']]
 
 
@@ -38,7 +38,7 @@ PATHS = {
 
 
         },
-        'query_params': ['orgId', 'fields'],
+        'query_params': ['orgId', 'fields', 'hydrate'],
         'required_params': [[]]
 
 
@@ -153,7 +153,7 @@ PATHS = {
             }
 
         },
-        "query_params": ['divisionId', 'includeInactive', 'leagueID', 'sportId', 'fields'],
+        "query_params": ['divisionId', 'includeInactive', 'leagueID', 'sportId', 'fields', 'hydrate'],
         'required_params': [[]]
 
     },
@@ -165,7 +165,7 @@ PATHS = {
                 'required': True
             }
         },
-        'query_params': ['conferenceId', 'season', 'fields'],
+        'query_params': ['conferenceId', 'season', 'fields', 'hydrate'],
         'required_params': [[]]
     },
     "draft": {
@@ -181,7 +181,7 @@ PATHS = {
                 'default': 2019
 
             },
-            'query_params': ['limit', 'fields', 'order', 'round', 'name', 'position', 'team', 'teamId', 'state', 'country', 'playerId', 'bisPlayerId'],
+            'query_params': ['limit','hydrate', 'fields', 'order', 'round', 'name', 'position', 'team', 'teamId', 'state', 'country', 'playerId', 'bisPlayerId'],
             'required_params': [['year']]
 
         },
@@ -200,7 +200,7 @@ PATHS = {
                 'default': 2019
 
             },
-            'query_params': ['limit', 'fields', 'order', 'round', 'name', 'position', 'team', 'teamId', 'state', 'country', 'playerId', 'bisPlayerId'],
+            'query_params': ['hydrate', 'limit', 'fields', 'order', 'round', 'name', 'position', 'team', 'teamId', 'state', 'country', 'playerId', 'bisPlayerId'],
             'required_params': [['year']]
 
         }
@@ -215,7 +215,7 @@ PATHS = {
                 'required': True
             }
         },
-        'query_params': ['leagueId', 'season', 'standingsTypes', 'date', 'fields'],
+        'query_params': ['leagueId', 'season', 'standingsTypes', 'date', 'fields', 'hydrate'],
         'required_params': [['leagueId']]
     },
 
@@ -229,7 +229,7 @@ PATHS = {
                 'required': True
             }
         },
-        'query_params': ['stats', 'playerPool', 'position', 'teamId', 'leagueId', 'limit', 'offset', 'group', 'gameType', 'season', 'sportIds', 'sortStat', 'order',  'fields'],
+        'query_params': ['stats', 'playerPool', 'position', 'teamId', 'leagueId', 'limit', 'offset', 'group', 'gameType', 'season', 'sportIds', 'sortStat', 'order',  'fields', 'hydrate'],
         'required_params': [['stats', 'group']]
     },
 
@@ -244,7 +244,7 @@ PATHS = {
                 'required': True
             }
         },
-        'query_params': ['leaderCategories', 'playerPool', 'leaderGameTypes', 'statGroup', 'season', 'leagueId', 'sportId', 'hydrate', 'limit', 'fields', 'statType'],
+        'query_params': ['leaderCategories', 'playerPool', 'leaderGameTypes', 'statGroup', 'season', 'leagueId', 'sportId', 'hydrate', 'limit', 'fields', 'statType', 'hydrate'],
         'required_params': [['leaderCategories']],
         'note': 'If excluding season parameter to get all time leaders, include statType=statsSingleSeason or you will likely not get any results.'
     },
@@ -257,21 +257,27 @@ PATHS = {
                 'required': True
             }
         },
-        'query_params': ['streakType', 'streakSpan', 'gameType', 'season', 'sportId', 'limit', 'fields'],
+        'query_params': ['streakType', 'streakSpan', 'gameType', 'season', 'sportId', 'limit', 'fields', 'hydrate'],
         'required_params': [['streakType', 'streakSpan', 'season']],
         # 'note': 'Valid streakType values: "hittingStreakOverall" "hittingStreakHome" "hittingStreakAway" "onBaseOverall" "onBaseHome" "onBaseAway". Valid streakSpan values: "career" "season" "currentStreak" "currentStreakInSeason" "notable" "notableInSeason".'
     },
     'people':                       {
-        'url': BASE_URL + '/{ver}/people',
+    #Fix here
+        'url': BASE_URL + '/{ver}/people/{personId}',
         'path_params':  {
             'ver':      {
 
                 'default': 'v1',
                 'required': True
+            },
+            'personId' : {
+                'default': None,
+                'required': True
+
             }
         },
-        'query_params': ['personIds', 'fields'],
-        'required_params': [['personIds']]
+        'query_params': [ 'fields', 'hydrate'],
+        'required_params': [[]]
     },
     'teams':                        {
         'url': BASE_URL + '/{ver}/teams',
@@ -283,7 +289,7 @@ PATHS = {
                 'required': True
             }
         },
-        'query_params': ['season', 'activeStatus', 'leagueIds', 'sportIds', 'gameType', 'fields'],
+        'query_params': ['season', 'activeStatus', 'leagueIds', 'sportIds', 'gameType', 'fields', 'hydrate'],
         'required_params': [[]]
     },
     'teams_history':                {
@@ -297,21 +303,20 @@ PATHS = {
                 'required': True
             }
         },
-        'query_params': ['teamIds', 'startSeason', 'endSeason', 'fields'],
+        'query_params': ['teamIds', 'startSeason', 'endSeason', 'fields', 'hydrate'],
         'required_params': [['teamIds']]
     },
     'teams_stats':                  {
         'url': BASE_URL + '{ver}/teams/stats',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             }
         },
-        'query_params': ['season', 'sportIds', 'group', 'gameType', 'stats', 'order', 'sortStat', 'fields'],
+        'query_params': ['season', 'sportIds', 'group', 'gameType', 'stats', 'order', 'sortStat', 'fields' , 'hydrate'],
         'required_params': [['season', 'group', 'stats']],
         'note': 'Use meta(\'statGroups\') to look up valid values for group, and meta(\'statTypes\') for valid values for stats.'
     },
@@ -326,108 +331,98 @@ PATHS = {
                 'required': True
             }
         },
-        'query_params': ['teamIds', 'sportId', 'season', 'hydrate', 'fields'],
+        'query_params': ['teamIds', 'sportId', 'season', 'hydrate', 'fields', 'hydrate'],
         'required_params': [['teamIds']]
     },
     'team_alumni':                  {
         'url': BASE_URL + '{ver}/teams/{teamId}/alumni',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             },
             'teamId':   {
-                'type': 'str',
+
                 'default': None,
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             }
         },
-        'query_params': ['season', 'group', 'hydrate', 'fields'],
+        'query_params': ['season', 'group', 'hydrate', 'fields', 'hydrate'],
         'required_params': [['season', 'group']]
     },
     'team_coaches':                 {
         'url': BASE_URL + '{ver}/teams/{teamId}/coaches',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             },
             'teamId':   {
-                'type': 'str',
+
                 'default': None,
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             }
         },
-        'query_params': ['season', 'date', 'fields'],
+        'query_params': ['season', 'date', 'fields', 'hydrate'],
         'required_params': [[]]
     },
     'team_personnel':               {
         'url': BASE_URL + '{ver}/teams/{teamId}/personnel',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             },
             'teamId':   {
-                'type': 'str',
+
                 'default': None,
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             }
         },
-        'query_params': ['date', 'fields'],
+        'query_params': ['date', 'fields', 'hydrate'],
         'required_params': [[]]
     },
     'team_leaders':                  {
         'url': BASE_URL + '{ver}/teams/{teamId}/leaders',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             },
             'teamId':   {
-                'type': 'str',
+
                 'default': None,
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             }
         },
-        'query_params': ['leaderCategories', 'season', 'leaderGameTypes', 'hydrate', 'limit', 'fields'],
+        'query_params': ['leaderCategories', 'season', 'leaderGameTypes', 'hydrate', 'limit', 'fields', 'hydrate'],
         'required_params': [['leaderCategories', 'season']]
     },
     'team_roster':                  {
         'url': BASE_URL + '{ver}/teams/{teamId}/roster',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             },
             'teamId':   {
-                'type': 'str',
+
                 'default': None,
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             }
         },
@@ -446,24 +441,22 @@ PATHS = {
                 'required': True
             }
         },
-        'query_params': ['updatedSince', 'fields'],
+        'query_params': ['updatedSince', 'fields', 'hydrate'],
         'required_params': [[]]
     },
     'people_freeAgents':            {
         'url': BASE_URL + '{ver}/people/freeAgents',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             },
             'leagueId': {
-                'type': 'str',
+
                 'default': '',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             }
         },
@@ -471,52 +464,45 @@ PATHS = {
         'required_params': [[]]
     },
     'person':                       {
-        'url': BASE_URL + '{ver}/people/{personId}',
+        'url': BASE_URL + '/{ver}/people/{personId}',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             },
             'personId': {
-                'type': 'str',
+
                 'default': None,
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             }
         },
-        'query_params': ['hydrate', 'fields'],
-        'required_params': [[]]
+        'query_params': ['fields', 'hydrate'],
+        'required_params': [['personId']]
     },
     'person_stats':                 {
         'url': BASE_URL + '{ver}/people/{personId}/stats/game/{gamePk}',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             },
             'personId': {
-                'type': 'str',
                 'default': None,
-                'leading_slash': False,
-                'trailing_slash': False,
                 'required': True
             },
             'gamePk': {
-                'type': 'str',
+
                 'default': None,
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             }
         },
-        'query_params': ['fields'],
+        'query_params': ['fields', 'hydrate'],
         'required_params': [[]],
         'note': 'Specify "current" instead of a gamePk for a player\'s current game stats.'
     },
@@ -524,24 +510,22 @@ PATHS = {
                                                     'url': BASE_URL + '/{ver}/schedule',
                                                     'path_params':  {
                                                                         'ver':      {
-                                                                                        'type': 'str',
+
                                                                                         'default': 'v1',
-                                                                                        'leading_slash': False,
-                                                                                        'trailing_slash': False,
+
                                                                                         'required': True
                                                                                     }
                                                                     },
-                                                    'query_params': ['scheduleType','eventTypes','hydrate','teamId','leagueId','sportId','gamePk','gamePks','venueIds','gameTypes','date','startDate','endDate','opponentId','fields'],
+                                                    'query_params': ['scheduleType','eventTypes','hydrate','teamId','leagueId','sportId','gamePk','gamePks','venueIds','gameTypes','date','startDate','endDate','opponentId','fields', 'hydrate'],
                                                     'required_params': [['sportId', 'gamePk', 'gamePks']]
                                                 },
                 'schedule_tied':                {
                                                     'url': BASE_URL + '{ver}/schedule/games/tied',
                                                     'path_params':  {
                                                                         'ver':      {
-                                                                                        'type': 'str',
+
                                                                                         'default': 'v1',
-                                                                                        'leading_slash': False,
-                                                                                        'trailing_slash': False,
+
                                                                                         'required': True
                                                                                     }
                                                                     },
@@ -552,10 +536,9 @@ PATHS = {
                                                     'url': BASE_URL + '{ver}/schedule/postseason',
                                                     'path_params':  {
                                                                         'ver':      {
-                                                                                        'type': 'str',
+
                                                                                         'default': 'v1',
-                                                                                        'leading_slash': False,
-                                                                                        'trailing_slash': False,
+
                                                                                         'required': True
                                                                                     }
                                                                     },
@@ -566,10 +549,9 @@ PATHS = {
                                                     'url': BASE_URL + '{ver}/schedule/postseason/series',
                                                     'path_params':  {
                                                                         'ver':      {
-                                                                                        'type': 'str',
+
                                                                                         'default': 'v1',
-                                                                                        'leading_slash': False,
-                                                                                        'trailing_slash': False,
+
                                                                                         'required': True
                                                                                     }
                                                                     },
@@ -580,10 +562,9 @@ PATHS = {
                                                     'url': BASE_URL + '{ver}/schedule/postseason/tuneIn',
                                                     'path_params':  {
                                                                         'ver':      {
-                                                                                        'type': 'str',
+
                                                                                         'default': 'v1',
-                                                                                        'leading_slash': False,
-                                                                                        'trailing_slash': False,
+
                                                                                         'required': True
                                                                                     }
 },

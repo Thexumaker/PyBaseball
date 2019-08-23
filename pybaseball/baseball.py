@@ -45,9 +45,7 @@ def getPlayerList():
 # return whatever the user wants
 # More or less works
 
-def latestGamePack(team):
-    lgr= get('schedule', {'ver':'v1', 'sportId':1, 'date':today, 'teamId':team, 'fields':['dates','games','gamePk'] })
-    return lgr['dates'][0]['games'][0]['gamePk']
+
 def getInfo(name):
     r = []
     args = ["currentAge", "primaryPosition", "id"]
@@ -57,6 +55,28 @@ def getInfo(name):
         r.append(requests.get(r_url).json()["people"][0][arg])
     return r
 # Stuff good
+
+
+def seasonStats(personId,type,group):
+    """"Returns a player's season/career stats and wether it's hitting or pitching or fielding"""
+
+    #playerInfo = get('people', {'personIds':personId})
+
+
+    teamStats = get('person',{'ver':'v1', 'personId':personId,'hydrate':['stats(group={},type={})'.format(group,type),'currentTeam']})
+    return teamStats
+    #iterate of stats and find the right player id
+    #career stats broken
+    #fix the season :2019
+    #make function to get team id
+
+def latestGamePack(team):
+    """Returns latest game pack number for a specified team
+    >>>latestGamePack(117)
+    565664
+    """
+    lgr= get('schedule', {'ver':'v1', 'sportId':1, 'date':today, 'teamId':team, 'fields':['dates','games','gamePk'] })
+    return lgr['dates'][0]['games'][0]['gamePk']
 
 
 def getAttendance(Id, params, fields):
@@ -74,12 +94,12 @@ def getAttendance(Id, params, fields):
     return result
 
 
-def getPlayer(name):
+def getPlayerInfo(name):
     """A function to return the age, position and player id of a given player name"""
     r = []
     ids = players[name]
     r_url = get('people', {'personIds': ids,
-                           'ver': 'v1', 'fields': ['people', 'id']})
+                           'ver': 'v1'})
     #constants.BASE_URL + "/people/{}".format(ids)
 
     return r_url
@@ -94,6 +114,7 @@ def get(path, dict_params):
     path_params = {}
     query_params = {}
     fields = []
+    hydrations = []
     first_field = True
     print(dict_params)
     # search through the dictionary of params, categorize what kind of parameter, make sure they exist and then replace them in the url
@@ -119,61 +140,67 @@ def get(path, dict_params):
         end_index = url.find('}')
         param = url[start_index:end_index + 1]
         print(url)
-
         param_without_brackets = url[start_index + 1:end_index]
         if param_without_brackets not in curr['required_params']:
             url = url.replace("/" + param, '')
 
         elif param_without_brackets in curr['required_params']:
             # doesn't work
-            break
+            url = url.replace(param, curr.get('path_params').get(param_without_brackets)['default'] )
 
     if len(query_params) > 0:
         for k, v in query_params.items():
             if k == 'fields':
                 fields.extend(v)
+            elif k == 'hydrate':
+                hydrations.extend(v)
             else:
                 sep = '?' if url.find('?') == -1 else '&'
                 v = str(v)
                 url += sep + k + "=" + v
         # For if fields in the query
-        if(len(fields) > 0):
+        if(len(fields) > 0 or len(hydrations) > 0):
             print(fields)
+            print(hydrations)
             fsep = '?' if url.find('?') == -1 else '&'
             url += fsep + k + "="
-            fields_size = len(fields)
+            #We could fix this part later to more efficiently sort through fields and hydrations
             counter = 1
             for f in fields:
-                sep = '%2c' if counter < fields_size else ''
+                sep = '%2c' if counter < len(fields) else ''
                 counter += 1
                 qurl = f + sep
                 url += qurl
-
+            counter = 1
+            for h in hydrations:
+                sep = '%2c' if counter < len(hydrations) else ''
+                counter += 1
+                qurl = h + sep
+                url += qurl
     # Make sure required parameters are present
     print(url)
     satisfied = False
     missing_params = []
     for x in curr.get('required_params', []):
         if len(x) == 0:
-            satisfied = True
+            break
         else:
             for i in x:
-                if path_params.get(i) or query_params.get(i):
+                if path_params.get(i) or query_params.get(i) or i in fields or i in hydrations:
+                    satisfied=True
+            if satisfied != True:
+                missing_params.extend(x)
 
-                    break
-                else:
-                    satisfied = False
 
-            if len(missing_params) == 0:
-
-                satisfied = True
-                break
-    if satisfied is False:
-        return "Broken"
+    if len(missing_params) != 0:
+        return 'missing params {}'.format(missing_params)
 
     r = requests.get(url)
-    print(r)
-    return r.json()
+    if r.status_code not in [200,201]:
+        return r.status_code
+    else:
+        return r.json()
+
 
 
 getTeamIds()
@@ -185,9 +212,9 @@ getPlayerList()
 # `print(getInfo("Matt Chapman"))
 
 # IMPORTNAT
-print(getPlayer("Justin Verlander"))
-print(latestGamePack(117))
-
+#print(getPlayerInfo("Justin Verlander"))
+#print(latestGamePack(117))
+print(seasonStats(543760,'season','hitting'))
 # END
 #print(get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'}))
 
