@@ -63,7 +63,7 @@ def seasonStats(personId,type,group):
     #playerInfo = get('people', {'personIds':personId})
 
 
-    teamStats = get('person',{'ver':'v1', 'personId':personId,'hydrate':['stats(group={},type={})'.format(group,type),'currentTeam']})
+    teamStats = get('person',{ 'ver':'v1' , 'personId':personId,'hydrate':['stats(group={},type={})'.format(group,type),'currentTeam']})
     return teamStats
     #iterate of stats and find the right player id
     #career stats broken
@@ -150,33 +150,22 @@ def get(path, dict_params):
 
     if len(query_params) > 0:
         for k, v in query_params.items():
-            if k == 'fields':
-                fields.extend(v)
-            elif k == 'hydrate':
-                hydrations.extend(v)
+            if k == 'fields' or k == 'hydrate':
+                sep = '?' if url.find('?') == -1 else '&'
+                url += sep + k + "="
+                total = len(v)
+                counter = 1
+                for i in v:
+                    sep = '%2c' if counter < total else ''
+                    counter += 1
+                    qurl = i + sep
+                    url += qurl
             else:
                 sep = '?' if url.find('?') == -1 else '&'
                 v = str(v)
                 url += sep + k + "=" + v
         # For if fields in the query
-        if(len(fields) > 0 or len(hydrations) > 0):
-            print(fields)
-            print(hydrations)
-            fsep = '?' if url.find('?') == -1 else '&'
-            url += fsep + k + "="
-            #We could fix this part later to more efficiently sort through fields and hydrations
-            counter = 1
-            for f in fields:
-                sep = '%2c' if counter < len(fields) else ''
-                counter += 1
-                qurl = f + sep
-                url += qurl
-            counter = 1
-            for h in hydrations:
-                sep = '%2c' if counter < len(hydrations) else ''
-                counter += 1
-                qurl = h + sep
-                url += qurl
+
     # Make sure required parameters are present
     print(url)
     satisfied = False
