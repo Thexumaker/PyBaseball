@@ -4,6 +4,7 @@
 
 **Merged pull requests:**
 
+- Added stats capability as well as fixed bugs in get method [\#13](https://github.com/Thexumaker/PyBaseball/pull/13) ([Thexumaker](https://github.com/Thexumaker))
 - v0.0.7\(08/19/2019\) [\#12](https://github.com/Thexumaker/PyBaseball/pull/12) ([Thexumaker](https://github.com/Thexumaker))
 - v0.0.6 [\#11](https://github.com/Thexumaker/PyBaseball/pull/11) ([Thexumaker](https://github.com/Thexumaker))
 - fixed getAttendance [\#10](https://github.com/Thexumaker/PyBaseball/pull/10) ([Thexumaker](https://github.com/Thexumaker))
