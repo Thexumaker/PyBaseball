@@ -14,7 +14,7 @@ PATHS = {
 
         },
         "query_params": ['teamId', 'leagueID', 'season', 'leagueListID', 'gameType', 'startDate', 'endDate', 'fields', 'hydrate'],
-        'required_params': [['teamID', 'leagueID', 'leagueListID']]
+        'required_params': [['ver'], ['teamID', 'leagueID', 'leagueListID']]
 
 
 
@@ -29,17 +29,17 @@ PATHS = {
             },
             "awardId": {
                 "required": False,
-                "default": None
+                "default": 'awardId'
             },
             "recipients": {
-                "required:False"
+                "required": False
                 "default": None
             }
 
 
         },
         'query_params': ['orgId', 'fields', 'hydrate'],
-        'required_params': [[]]
+        'required_params': [['ver'], ['awardId'], ['recipients']]
 
 
     },
@@ -154,7 +154,7 @@ PATHS = {
 
         },
         "query_params": ['divisionId', 'includeInactive', 'leagueID', 'sportId', 'fields', 'hydrate'],
-        'required_params': [[]]
+        'required_params': [['ver']]
 
     },
     'conferences':                   {
@@ -166,7 +166,7 @@ PATHS = {
             }
         },
         'query_params': ['conferenceId', 'season', 'fields', 'hydrate'],
-        'required_params': [[]]
+        'required_params': [['ver']]
     },
     "draft": {
         'url': BASE_URL + "/{ver}/draft/{year}",
@@ -181,8 +181,8 @@ PATHS = {
                 'default': 2019
 
             },
-            'query_params': ['limit','hydrate', 'fields', 'order', 'round', 'name', 'position', 'team', 'teamId', 'state', 'country', 'playerId', 'bisPlayerId'],
-            'required_params': [['year']]
+            'query_params': ['limit', 'hydrate', 'fields', 'order', 'round', 'name', 'position', 'team', 'teamId', 'state', 'country', 'playerId', 'bisPlayerId'],
+            'required_params': [['ver'], ['year']]
 
         },
 
@@ -201,13 +201,13 @@ PATHS = {
 
             },
             'query_params': ['hydrate', 'limit', 'fields', 'order', 'round', 'name', 'position', 'team', 'teamId', 'state', 'country', 'playerId', 'bisPlayerId'],
-            'required_params': [['year']]
+            'required_params': [['ver'], ['year']]
 
         }
 
     },
     'standings':                    {
-        'url': BASE_URL + '{ver}/standings',
+        'url': BASE_URL + '/{ver}/standings',
         'path_params':  {
             'ver':      {
 
@@ -216,11 +216,11 @@ PATHS = {
             }
         },
         'query_params': ['leagueId', 'season', 'standingsTypes', 'date', 'fields', 'hydrate'],
-        'required_params': [['leagueId']]
+        'required_params': [['ver'], ['leagueId']]
     },
 
     'stats':                        {
-        'url': BASE_URL + '{ver}/stats',
+        'url': BASE_URL + '/{ver}/stats',
         'path_params':  {
             'ver':      {
 
@@ -230,22 +230,20 @@ PATHS = {
             }
         },
         'query_params': ['stats', 'playerPool', 'position', 'teamId', 'leagueId', 'limit', 'offset', 'group', 'gameType', 'season', 'sportIds', 'sortStat', 'order',  'fields', 'hydrate'],
-        'required_params': [['stats', 'group']]
+        'required_params': [['ver'], ['stats'], ['group']]
     },
 
     'stats_leaders':                {
-        'url': BASE_URL + '{ver}/stats/leaders',
+        'url': BASE_URL + '/{ver}/stats/leaders',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
                 'required': True
             }
         },
         'query_params': ['leaderCategories', 'playerPool', 'leaderGameTypes', 'statGroup', 'season', 'leagueId', 'sportId', 'hydrate', 'limit', 'fields', 'statType', 'hydrate'],
-        'required_params': [['leaderCategories']],
+        'required_params': [['ver'], ['leaderCategories']],
         'note': 'If excluding season parameter to get all time leaders, include statType=statsSingleSeason or you will likely not get any results.'
     },
     'stats_streaks':                {
@@ -258,11 +256,11 @@ PATHS = {
             }
         },
         'query_params': ['streakType', 'streakSpan', 'gameType', 'season', 'sportId', 'limit', 'fields', 'hydrate'],
-        'required_params': [['streakType', 'streakSpan', 'season']],
+        'required_params': [['streakType'], ['season'], ['streakSpan'], ['gameType']]
         # 'note': 'Valid streakType values: "hittingStreakOverall" "hittingStreakHome" "hittingStreakAway" "onBaseOverall" "onBaseHome" "onBaseAway". Valid streakSpan values: "career" "season" "currentStreak" "currentStreakInSeason" "notable" "notableInSeason".'
     },
     'people':                       {
-    #Fix here
+        # Fix here
         'url': BASE_URL + '/{ver}/people/{personId}',
         'path_params':  {
             'ver':      {
@@ -270,13 +268,13 @@ PATHS = {
                 'default': 'v1',
                 'required': True
             },
-            'personId' : {
+            'personId': {
                 'default': None,
                 'required': True
 
             }
         },
-        'query_params': [ 'fields', 'hydrate'],
+        'query_params': ['fields', 'hydrate'],
         'required_params': [[]]
     },
     'teams':                        {
@@ -290,24 +288,23 @@ PATHS = {
             }
         },
         'query_params': ['season', 'activeStatus', 'leagueIds', 'sportIds', 'gameType', 'fields', 'hydrate'],
-        'required_params': [[]]
+        'required_params': [['ver']]
     },
     'teams_history':                {
         'url': BASE_URL + '{ver}/teams/history',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             }
         },
         'query_params': ['teamIds', 'startSeason', 'endSeason', 'fields', 'hydrate'],
-        'required_params': [['teamIds']]
+        'required_params': [['ver'], ['teamIds']]
     },
     'teams_stats':                  {
-        'url': BASE_URL + '{ver}/teams/stats',
+        'url': BASE_URL + '/{ver}/teams/stats',
         'path_params':  {
             'ver':      {
 
@@ -316,26 +313,25 @@ PATHS = {
                 'required': True
             }
         },
-        'query_params': ['season', 'sportIds', 'group', 'gameType', 'stats', 'order', 'sortStat', 'fields' , 'hydrate'],
+        'query_params': ['season', 'sportIds', 'group', 'gameType', 'stats', 'order', 'sortStat', 'fields', 'hydrate'],
         'required_params': [['season', 'group', 'stats']],
         'note': 'Use meta(\'statGroups\') to look up valid values for group, and meta(\'statTypes\') for valid values for stats.'
     },
     'teams_affiliates':             {
-        'url': BASE_URL + '{ver}/teams/affiliates',
+        'url': BASE_URL + '/{ver}/teams/affiliates',
         'path_params':  {
             'ver':      {
-                'type': 'str',
+
                 'default': 'v1',
-                'leading_slash': False,
-                'trailing_slash': False,
+
                 'required': True
             }
         },
         'query_params': ['teamIds', 'sportId', 'season', 'hydrate', 'fields', 'hydrate'],
-        'required_params': [['teamIds']]
+        'required_params': [['ver'], ['teamIds']]
     },
     'team_alumni':                  {
-        'url': BASE_URL + '{ver}/teams/{teamId}/alumni',
+        'url': BASE_URL + '/{ver}/teams/{teamId}/alumni',
         'path_params':  {
             'ver':      {
 
@@ -351,10 +347,10 @@ PATHS = {
             }
         },
         'query_params': ['season', 'group', 'hydrate', 'fields', 'hydrate'],
-        'required_params': [['season', 'group']]
+        'required_params': [['ver'], ['season', 'group']]
     },
     'team_coaches':                 {
-        'url': BASE_URL + '{ver}/teams/{teamId}/coaches',
+        'url': BASE_URL + '/{ver}/teams/{teamId}/coaches',
         'path_params':  {
             'ver':      {
 
@@ -370,10 +366,10 @@ PATHS = {
             }
         },
         'query_params': ['season', 'date', 'fields', 'hydrate'],
-        'required_params': [[]]
+        'required_params': [['ver']]
     },
     'team_personnel':               {
-        'url': BASE_URL + '{ver}/teams/{teamId}/personnel',
+        'url': BASE_URL + '/{ver}/teams/{teamId}/personnel',
         'path_params':  {
             'ver':      {
 
@@ -389,10 +385,10 @@ PATHS = {
             }
         },
         'query_params': ['date', 'fields', 'hydrate'],
-        'required_params': [[]]
+        'required_params': [['ver']]
     },
     'team_leaders':                  {
-        'url': BASE_URL + '{ver}/teams/{teamId}/leaders',
+        'url': BASE_URL + '/{ver}/teams/{teamId}/leaders',
         'path_params':  {
             'ver':      {
 
@@ -408,10 +404,10 @@ PATHS = {
             }
         },
         'query_params': ['leaderCategories', 'season', 'leaderGameTypes', 'hydrate', 'limit', 'fields', 'hydrate'],
-        'required_params': [['leaderCategories', 'season']]
+        'required_params': [['ver'], ['leaderCategories', 'season']]
     },
     'team_roster':                  {
-        'url': BASE_URL + '{ver}/teams/{teamId}/roster',
+        'url': BASE_URL + '/{ver}/teams/{teamId}/roster',
         'path_params':  {
             'ver':      {
 
@@ -427,11 +423,11 @@ PATHS = {
             }
         },
         'query_params': ['rosterType', 'season', 'date', 'hydrate', 'fields'],
-        'required_params': [['rosterType', 'season']]
+        'required_params': [['ver'], ['rosterType', 'season']]
     },
 
     'people_changes':               {
-        'url': BASE_URL + '{ver}/people/changes',
+        'url': BASE_URL + '/{ver}/people/changes',
         'path_params':  {
             'ver':      {
                 'type': 'str',
@@ -442,10 +438,10 @@ PATHS = {
             }
         },
         'query_params': ['updatedSince', 'fields', 'hydrate'],
-        'required_params': [[]]
+        'required_params': [['ver']]
     },
     'people_freeAgents':            {
-        'url': BASE_URL + '{ver}/people/freeAgents',
+        'url': BASE_URL + '/{ver}/people/freeAgents',
         'path_params':  {
             'ver':      {
 
@@ -461,7 +457,7 @@ PATHS = {
             }
         },
         'query_params': ['order', 'hydrate', 'fields'],
-        'required_params': [[]]
+        'required_params': [['ver']]
     },
     'person':                       {
         'url': BASE_URL + '/{ver}/people/{personId}',
@@ -480,10 +476,10 @@ PATHS = {
             }
         },
         'query_params': ['fields', 'hydrate'],
-        'required_params': [['personId']]
+        'required_params': [['ver'], ['personId']]
     },
     'person_stats':                 {
-        'url': BASE_URL + '{ver}/people/{personId}/stats/game/{gamePk}',
+        'url': BASE_URL + '/{ver}/people/{personId}/stats/game/{gamePk}',
         'path_params':  {
             'ver':      {
 
@@ -503,75 +499,75 @@ PATHS = {
             }
         },
         'query_params': ['fields', 'hydrate'],
-        'required_params': [[]],
+        'required_params': [['ver']],
         'note': 'Specify "current" instead of a gamePk for a player\'s current game stats.'
     },
     'schedule':                     {
-                                                    'url': BASE_URL + '/{ver}/schedule',
-                                                    'path_params':  {
-                                                                        'ver':      {
+        'url': BASE_URL + '/{ver}/schedule',
+        'path_params':  {
+            'ver':      {
 
-                                                                                        'default': 'v1',
+                'default': 'v1',
 
-                                                                                        'required': True
-                                                                                    }
-                                                                    },
-                                                    'query_params': ['scheduleType','eventTypes','hydrate','teamId','leagueId','sportId','gamePk','gamePks','venueIds','gameTypes','date','startDate','endDate','opponentId','fields', 'hydrate'],
-                                                    'required_params': [['sportId', 'gamePk', 'gamePks']]
-                                                },
-                'schedule_tied':                {
-                                                    'url': BASE_URL + '{ver}/schedule/games/tied',
-                                                    'path_params':  {
-                                                                        'ver':      {
+                'required': True
+            }
+        },
+        'query_params': ['scheduleType', 'eventTypes', 'hydrate', 'teamId', 'leagueId', 'sportId', 'gamePk', 'gamePks', 'venueIds', 'gameTypes', 'date', 'startDate', 'endDate', 'opponentId', 'fields', 'hydrate'],
+        'required_params': [['ver'], ['sportId', 'gamePk', 'gamePks']]
+    },
+    'schedule_tied':                {
+        'url': BASE_URL + '/{ver}/schedule/games/tied',
+        'path_params':  {
+            'ver':      {
 
-                                                                                        'default': 'v1',
+                'default': 'v1',
 
-                                                                                        'required': True
-                                                                                    }
-                                                                    },
-                                                    'query_params': ['gameTypes','season','hydrate','fields'],
-                                                    'required_params': [['season']]
-                                                },
-                'schedule_postseason':          {
-                                                    'url': BASE_URL + '{ver}/schedule/postseason',
-                                                    'path_params':  {
-                                                                        'ver':      {
+                'required': True
+            }
+        },
+        'query_params': ['gameTypes', 'season', 'hydrate', 'fields'],
+        'required_params': [['season']]
+    },
+    'schedule_postseason':          {
+        'url': BASE_URL + '/{ver}/schedule/postseason',
+        'path_params':  {
+            'ver':      {
 
-                                                                                        'default': 'v1',
+                'default': 'v1',
 
-                                                                                        'required': True
-                                                                                    }
-                                                                    },
-                                                    'query_params': ['gameTypes','seriesNumber','teamId','sportId','season','hydrate','fields'],
-                                                    'required_params': [[]]
-                                                },
-                'schedule_postseason_series':   {
-                                                    'url': BASE_URL + '{ver}/schedule/postseason/series',
-                                                    'path_params':  {
-                                                                        'ver':      {
+                'required': True
+            }
+        },
+        'query_params': ['gameTypes', 'seriesNumber', 'teamId', 'sportId', 'season', 'hydrate', 'fields'],
+        'required_params': [[]]
+    },
+    'schedule_postseason_series':   {
+        'url': BASE_URL + '/{ver}/schedule/postseason/series',
+        'path_params':  {
+            'ver':      {
 
-                                                                                        'default': 'v1',
+                'default': 'v1',
 
-                                                                                        'required': True
-                                                                                    }
-                                                                    },
-                                                    'query_params': ['gameTypes','seriesNumber','teamId','sportId','season','fields'],
-                                                    'required_params': [[]]
-                                                },
-                'schedule_postseason_tuneIn':   {
-                                                    'url': BASE_URL + '{ver}/schedule/postseason/tuneIn',
-                                                    'path_params':  {
-                                                                        'ver':      {
+                'required': True
+            }
+        },
+        'query_params': ['gameTypes', 'seriesNumber', 'teamId', 'sportId', 'season', 'fields'],
+        'required_params': [[]]
+    },
+    'schedule_postseason_tuneIn':   {
+        'url': BASE_URL + '/{ver}/schedule/postseason/tuneIn',
+        'path_params':  {
+            'ver':      {
 
-                                                                                        'default': 'v1',
+                'default': 'v1',
 
-                                                                                        'required': True
-                                                                                    }
-},
-                                                    'query_params': ['teamId','sportId','season','hydrate','fields'],
-                                                    'required_params': [[]],
-                                                    'note': 'The schedule_postseason_tuneIn endpoint appears to return no data.'
-                                                },
+                'required': True
+            }
+        },
+        'query_params': ['teamId', 'sportId', 'season', 'hydrate', 'fields'],
+        'required_params': [[]],
+        'note': 'The schedule_postseason_tuneIn endpoint appears to return no data.'
+    },
 
 
 }
