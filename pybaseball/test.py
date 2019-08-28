@@ -12,3 +12,10 @@ url = 'fehjsbfhejsbhfjes'
 print(curr.get('path_params').get('ver')['default'])
 url.replace('fehj', 'dickckckckckc')
 print(url)
+
+sql_command = """CREATE TABLE contacts (
+    playerId INTEGER PRIMARY KEY,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL);"""
+
+crsr.execute(sql_command)

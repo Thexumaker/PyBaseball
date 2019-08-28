@@ -2,48 +2,61 @@ from datetime import datetime
 import requests
 import constants
 import paths
-PATHS = paths.PATHS
 from datetime import datetime, date
+from matplotlib.pylab import plt #load plot library
+from matplotlib.collections import LineCollection
+from matplotlib import colors as mcolors
+import numpy as np
+import sqlite3
+import string
+
+PATHS = paths.PATHS
+#Strikezones = {'1' : ,'2' :,'3':,'4':,'5':,'6':,'7':,'8':,'9':,'10':,'11':,'12':,'13':,'14':}
 
 d = {}
-players = {}
+
 # If teamids is empty get all teams with their ids
 currentDate = date.today()
 
 today = currentDate.strftime('%m/%d/%Y')
-
-def getTeamIds():
-
-    with open("TeamID.txt") as f:
-        for line in f:
-            (key, val) = line.split()
-            d[int(key)] = val
-# def setTeamIds():
-# If playerids is empty write all players with their ids
+connection = sqlite3.connect("Players.db")
+crsr = connection.cursor()
 
 
-def setPlayerList():
-    for id in d:
-        roster = requests.get(constants.BASE_URL +
-                              "teams/{}/roster".format(id)).json()['roster']
-        for i in roster:
-            name = i['person']['fullName']
-            id = i['person']['id']
-            players[name] = id
-    f = open("playerID.txt", "w")
-    for player in players:
-        result = "{}:{}\n".format(player, players[player])
-        f.write(result)
-    f.close()
 
 
-def getPlayerList():
-    with open("playerID.txt") as f:
-        for line in f:
-            (key, val) = line.split(":")
-            players[key] = int(val)
-# return whatever the user wants
-# More or less works
+    """ Lets say i want to get spinrate i'm gonna have to go game by game thru hydrations and calculate"""
+def setPlayerList(sport = 1, season = [2019]):
+    """Returns a list of all active players within a sport and list of years
+    Default is mlb and 2019"""
+    playerList = {}
+    for y in season:
+        players = get('sports_players', {'ver': 'v1', 'season': y, 'sportId': sport })
+
+        for dict in players.get('people'):
+            print(dict)
+            for k,v in dict.items():
+
+                if k == 'id':
+                    id = v
+                elif k == 'firstName':
+                    first_name = v
+                elif k == 'lastName':
+                    if "'" in v:
+                        v = v.replace("'", '')
+
+                    last_Name = v
+            playerList[id] = [first_name, last_Name]
+            sql_command = """INSERT INTO contacts VALUES ({},'{}', '{}');""".format(id,first_name,last_Name)
+            print(sql_command)
+            crsr.execute(sql_command)
+    # If we skip this, nothing will be saved in the database.
+    connection.commit()
+
+    # close the connection
+    connection.close()
+    return playerList
+
 
 
 def getInfo(name):
@@ -57,8 +70,57 @@ def getInfo(name):
 # Stuff good
 
 
+
+def boxscore():
+    """ Generate boxscore"""
+def linescore():
+    """Generate linescore"""
+def hotColdZones(playerID):
+    #find his current team and if he's a hitter or pitcher then
+    """Not sure if this only works for current year or if i can get year by year data
+    This should only be his batting averages, etc and then give a hot/cold color
+    Versus say advancedstats i can get every single pitch and then add it to the strikezone map? but they should be seperate data
+    Also the graphs shouldnt be returned as its a visual tool, maybe they could be saved but for data science purposes it should be returning a list or dictionary of results """
+    zoneData = get('person',{ 'ver':'v1' , 'personId':personId,'hydrate':['stats(group={},type={})'.format(group,'hotColdZones'),'currentTeam']})
+
+
+def advancedStats():
+    """Still not sure how to proceed however for spin rate and what stats to put in per player, also have to fix
+    season stats"""
+
+
+def GenerateWpaGraph(GamePck):
+    """Returns a list of the homeTeam wPA and generates the Win probability graph of a specified game """
+    game = get('game_winProbability', {'ver': 'v1','gamePk': GamePck})
+
+    atbat = [0]
+    home = 50
+
+    homeL = [50]
+
+    for item in game:
+        for key, val in item.items():
+            if key == 'atBatIndex':
+                atbat.append(val)
+
+            if key == 'homeTeamWinProbabilityAdded':
+
+                home += val
+                homeL.append(home)
+
+    c = ['g' if a >= 50 else 'r' for a in homeL]
+    lines = [((x0,y0), (x1,y1)) for x0, y0, x1, y1 in zip(atbat[:], homeL[:], atbat[1:], homeL[1:])]
+    coloredLines = LineCollection(lines, colors = c, linewidths = (2,))
+    fig,ax = plt.subplots(1)
+    ax.add_collection(coloredLines)
+    ax.autoscale_view()
+    plt.show()
+    return homeL
+
 def seasonStats(personId,type,group):
-    """"Returns a player's season/career stats and wether it's hitting or pitching or fielding"""
+
+    """Returns a player's season/career stats and wether it's hitting or pitching or fielding
+        fix and improve this later"""
 
     #playerInfo = get('people', {'personIds':personId})
 
@@ -92,8 +154,6 @@ def getAttendance(Id, params, fields):
         qP.update({k: v})
     result = get('attendance', qP)
     return result
-
-
 def getPlayerInfo(name):
     """A function to return the age, position and player id of a given player name"""
     r = []
@@ -129,24 +189,21 @@ def get(path, dict_params):
             break
     print(query_params)
     for s, t in path_params.items():
-
         url = url.replace("{{{}}}".format(s), t)
-    print("broke here")
+    print("Working through here")
     while url.find('{') != -1:
         # so if u put in the wrong shit it repeats endlessly
         print(url)
         start_index = url.find('{')
-
         end_index = url.find('}')
         param = url[start_index:end_index + 1]
         print(url)
         param_without_brackets = url[start_index + 1:end_index]
-        if param_without_brackets not in curr['required_params']:
+        if param_without_brackets in curr['required_params']:
+            url = url.replace(param, curr.get('path_params').get(param_without_brackets)['default'])
+        elif param_without_brackets not in curr['required_params']:
             url = url.replace("/" + param, '')
 
-        elif param_without_brackets in curr['required_params']:
-            # doesn't work
-            url = url.replace(param, curr.get('path_params').get(param_without_brackets)['default'] )
 
     if len(query_params) > 0:
         for k, v in query_params.items():
@@ -165,7 +222,6 @@ def get(path, dict_params):
                 v = str(v)
                 url += sep + k + "=" + v
         # For if fields in the query
-
     # Make sure required parameters are present
     print(url)
     satisfied = False
@@ -199,13 +255,15 @@ getPlayerList()
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 
 # `print(getInfo("Matt Chapman"))
+#print(GenerateWpaGraph(567010))
 
 # IMPORTNAT
 #print(getPlayerInfo("Justin Verlander"))
-#print(latestGamePack(117))
-print(seasonStats(543760,'season','hitting'))
+#print(latestGamePack(133))
+#print(seasonStats(543760,'season','hitting'))
 # END
 #print(get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'}))
 
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 #print(getAttendance('133',{'season':2017}, 'dick'))
+setPlayerList()
