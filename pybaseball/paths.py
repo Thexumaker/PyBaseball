@@ -32,7 +32,7 @@ PATHS = {
                 "default": 'awardId'
             },
             "recipients": {
-                "required": False
+                "required": False,
                 "default": None
             }
 
@@ -568,6 +568,452 @@ PATHS = {
         'required_params': [[]],
         'note': 'The schedule_postseason_tuneIn endpoint appears to return no data.'
     },
+
+
+    'game':                         {
+        'url': BASE_URL + '/{ver}/game/{gamePk}/feed/live',
+        'path_params':  {
+            'ver':  {
+
+                'default': 'v1',
+
+                'required': True
+            },
+            'gamePk': {
+
+                'default': None,
+
+                'required': True
+            }
+        },
+        'query_params': ['timecode', 'hydrate', 'fields'],
+        'required_params': [['ver']]
+    },
+    'game_diff':                    {
+        'url': BASE_URL + '/{ver}/game/{gamePk}/feed/live/diffPatch',
+        'path_params':  {
+            'ver':  {
+
+                'default': 'v1',
+
+                'required': True
+            },
+            'gamePk': {
+
+                'default': None,
+
+                'required': True
+            }
+        },
+        'query_params': ['startTimecode', 'endTimecode'],
+        'required_params': [['ver'], ['startTimeCode', 'endTimeCode']]
+    },
+    'game_timestamps':              {
+        'url': BASE_URL + '/{ver}/game/{gamePk}/feed/live/timestamps',
+        'path_params':  {
+            'ver':  {
+
+                'default': 'v1',
+
+                'required': True
+            },
+            'gamePk': {
+
+                'default': None,
+
+                'required': True
+            }
+        },
+        'query_params': [],
+        'required_params': [['ver']]
+    },
+    'game_changes':                 {
+        'url': BASE_URL + '/{ver}/game/changes',
+        'path_params':  {
+            'ver':  {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['updatedSince', 'sportId', 'gameType', 'season', 'fields'],
+        'required_params': [['ver'], ['updatedSince']]
+    },
+    'game_contextMetrics':          {
+        'url': BASE_URL + '/{ver}/game/{gamePk}/contextMetrics',
+        'path_params':  {
+            'ver':  {
+
+                'default': 'v1',
+
+                'required': True
+            },
+            'gamePk': {
+
+                'default': None,
+
+                'required': True
+            }
+        },
+        'query_params': ['timecode', 'fields'],
+        'required_params': [['ver']]
+    },
+    'game_winProbability':          {
+        'url': BASE_URL + '/{ver}/game/{gamePk}/winProbability',
+        'path_params':  {
+            'ver':  {
+
+                'default': 'v1',
+
+                'required': True
+            },
+            'gamePk': {
+
+                'default': None,
+
+                'required': True
+            }
+        },
+        'query_params': ['timecode', 'fields'],
+        'required_params': [['ver']],
+        'note': 'If you only want the current win probability for each team, try the game_contextMetrics endpoint instad.'
+    },
+    'game_boxscore':                {
+        'url': BASE_URL + '{ver}/game/{gamePk}/boxscore',
+        'path_params':  {
+            'ver':  {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'gamePk': {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['timecode', 'fields'],
+        'required_params': [[]]
+    },
+    'game_content':                 {
+        'url': BASE_URL + '{ver}/game/{gamePk}/content',
+        'path_params':  {
+            'ver':  {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'gamePk': {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['highlightLimit'],
+        'required_params': [[]]
+    },
+    'game_color':                   {
+        'url': BASE_URL + '{ver}/game/{gamePk}/feed/color',
+        'path_params':  {
+            'ver':  {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'gamePk': {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['timecode', 'fields'],
+        'required_params': [[]]
+    },
+    'game_color_diff':              {
+        'url': BASE_URL + '{ver}/game/{gamePk}/feed/color/diffPatch',
+        'path_params':  {
+            'ver':  {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'gamePk': {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['startTimecode', 'endTimecode'],
+        'required_params': [['startTimeCode', 'endTimeCode']]
+    },
+    'game_color_timestamps':        {
+        'url': BASE_URL + '{ver}/game/{gamePk}/feed/color/timestamps',
+        'path_params':  {
+            'ver':  {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'gamePk': {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': [],
+        'required_params': [[]]
+    },
+    'game_linescore':               {
+        'url': BASE_URL + '{ver}/game/{gamePk}/linescore',
+        'path_params':  {
+            'ver':  {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'gamePk': {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['timecode', 'fields'],
+        'required_params': [[]]
+    },
+    'game_playByPlay':              {
+        'url': BASE_URL + '{ver}/game/{gamePk}/playByPlay',
+        'path_params':  {
+            'ver':  {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'gamePk': {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['timecode', 'fields'],
+        'required_params': [[]]
+    },
+    'gamePace':                     {
+        'url': BASE_URL + '{ver}/gamePace',
+        'path_params':  {
+            'ver':  {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['season', 'teamIds', 'leagueIds', 'leagueListId', 'sportId', 'gameType', 'startDate', 'endDate', 'venueIds', 'orgType', 'includeChildren', 'fields'],
+        'required_params': [['season']]
+    },
+    'highLow':                      {
+        'url': BASE_URL + '{ver}/highLow/{orgType}',
+        'path_params':  {
+            'ver':  {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'orgType':  {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['statGroup', 'sortStat', 'season', 'gameType', 'teamId', 'leagueId', 'sportIds', 'limit', 'fields'],
+        'required_params': [['sortStat', 'season']],
+        'note': 'Valid values for orgType parameter: player, team, division, league, sport, types.'
+    },
+    'homeRunDerby':                 {
+        'url': BASE_URL + '{ver}/honeRunDerby/{gamePk}{bracket}{pool}',
+        'path_params':  {
+            'ver':      {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'gamePk':   {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'bracket':  {
+                'type': 'bool',
+                'default': False,
+                'True': '/bracket',
+                'False': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': False
+            },
+            'pool':     {
+                'type': 'bool',
+                'default': False,
+                'True': '/pool',
+                'False': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': False
+            }
+        },
+        'query_params': ['fields'],
+        'required_params': [[]]
+    },
+    'league':                       {
+        'url': BASE_URL + '{ver}/league',
+        'path_params':  {
+            'ver':  {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['sportId', 'leagueIds', 'seasons', 'fields'],
+        'required_params': [['sportId'], ['leagueIds']]
+    },
+    'league_allStarBallot':         {
+        'url': BASE_URL + '{ver}/league/{leagueId}/allStarBallot',
+        'path_params':  {
+            'ver':      {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'leagueId': {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['season', 'fields'],
+        'required_params': [['season']]
+    },
+    'league_allStarWriteIns':       {
+        'url': BASE_URL + '{ver}/league/{leagueId}/allStarWriteIns',
+        'path_params':  {
+            'ver':      {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'leagueId': {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['season', 'fields'],
+        'required_params': [['season']]
+    },
+    'league_allStarFinalVote':      {
+        'url': BASE_URL + '{ver}/league/{leagueId}/allStarFinalVote',
+        'path_params':  {
+            'ver':      {
+                'type': 'str',
+                'default': 'v1',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            },
+            'leagueId': {
+                'type': 'str',
+                'default': '',
+                'leading_slash': False,
+                'trailing_slash': False,
+                'required': True
+            }
+        },
+        'query_params': ['season', 'fields'],
+        'required_params': [['season']]
+    },
+    'sports':                       {
+                                                    'url': BASE_URL + '{ver}/sports',
+                                                    'path_params':  {
+                                                                        'ver':      {
+                                                                                        'type': 'str',
+                                                                                        'default': 'v1',
+                                                                                        'leading_slash': False,
+                                                                                        'trailing_slash': False,
+                                                                                        'required': True
+                                                                                    }
+                                                                    },
+                                                    'query_params': ['sportId','fields'],
+                                                    'required_params': [[]]
+                                                },
+                'sports_players':               {
+                                                    'url': BASE_URL + '/{ver}/sports/{sportId}/players',
+                                                    'path_params':  {
+                                                                        'ver':      {
+                                                                                        'type': 'str',
+                                                                                        'default': 'v1',
+                                                                                        'leading_slash': False,
+                                                                                        'trailing_slash': False,
+                                                                                        'required': True
+                                                                                    },
+                                                                        'sportId': {
+                                                                                        'type': 'str',
+                                                                                        'default': '1',
+                                                                                        'leading_slash': False,
+                                                                                        'trailing_slash': False,
+                                                                                        'required': True
+                                                                                    }
+                                                                    },
+                                                    'query_params': ['season','gameType','fields'],
+                                                    'required_params': [['season']]
+                                                },
 
 
 }
