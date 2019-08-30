@@ -1,4 +1,4 @@
-from datetime import datetime
+
 import requests
 import constants
 import paths
@@ -9,11 +9,14 @@ from matplotlib import colors as mcolors
 import numpy as np
 import sqlite3
 import string
+import pandas as pd
+import StrikeZone
 
 PATHS = paths.PATHS
-#Strikezones = {'1' : ,'2' :,'3':,'4':,'5':,'6':,'7':,'8':,'9':,'10':,'11':,'12':,'13':,'14':}
+
 
 d = {}
+playerList = {}
 
 # If teamids is empty get all teams with their ids
 currentDate = date.today()
@@ -25,11 +28,11 @@ crsr = connection.cursor()
 
 
 
-    """ Lets say i want to get spinrate i'm gonna have to go game by game thru hydrations and calculate"""
+""" Lets say i want to get spinrate i'm gonna have to go game by game thru hydrations and calculate"""
 def setPlayerList(sport = 1, season = [2019]):
     """Returns a list of all active players within a sport and list of years
     Default is mlb and 2019"""
-    playerList = {}
+
     for y in season:
         players = get('sports_players', {'ver': 'v1', 'season': y, 'sportId': sport })
 
@@ -75,13 +78,48 @@ def boxscore():
     """ Generate boxscore"""
 def linescore():
     """Generate linescore"""
-def hotColdZones(playerID):
+def hotColdZones(playerID, group = 'hitting'):
     #find his current team and if he's a hitter or pitcher then
     """Not sure if this only works for current year or if i can get year by year data
     This should only be his batting averages, etc and then give a hot/cold color
     Versus say advancedstats i can get every single pitch and then add it to the strikezone map? but they should be seperate data
     Also the graphs shouldnt be returned as its a visual tool, maybe they could be saved but for data science purposes it should be returning a list or dictionary of results """
-    zoneData = get('person',{ 'ver':'v1' , 'personId':personId,'hydrate':['stats(group={},type={})'.format(group,'hotColdZones'),'currentTeam']})
+    zoneData = get('person',{ 'ver':'v1' , 'personId':playerID,'hydrate':['stats(group={},type={})'.format(group,'hotColdZones'),'currentTeam']})
+    zonesData = {}
+    for stat in zoneData.get('people')[0].get('stats'):
+        for types in stat.get('splits'):
+            zonesData[types.get('stat')['name']] = types.get('stat')['zones']
+            #create a list of Zones, up to 9
+            #using that list of zones make a strike zone
+            #make a list of strike zone data for each value
+    return zonesData
+
+def vStrikeZoneData(data):
+    sz = StrikeZone.strikeZone('dick')
+    zone = [1,2,3,4,5,6,7,8,9]
+    zoneData = []
+    for k,v in data.items():
+        if k == 'sluggingPercentage':
+            for i in v:
+
+                if int(i.get('zone')) > 9:
+                    break
+                else:
+                    zoneData.append(float(i.get('value')))
+
+    sz.updateStrikeZone(zone,zoneData)
+    sz.visualize()
+
+
+
+
+
+
+
+
+
+
+
 
 
 def advancedStats():
@@ -117,7 +155,7 @@ def GenerateWpaGraph(GamePck):
     plt.show()
     return homeL
 
-def seasonStats(personId,type,group):
+def seasonStats(personId,type = 'gameLog',group = 'hitting'):
 
     """Returns a player's season/career stats and wether it's hitting or pitching or fielding
         fix and improve this later"""
@@ -248,10 +286,6 @@ def get(path, dict_params):
 
 
 
-getTeamIds()
-
-getPlayerList()
-
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 
 # `print(getInfo("Matt Chapman"))
@@ -260,10 +294,11 @@ getPlayerList()
 # IMPORTNAT
 #print(getPlayerInfo("Justin Verlander"))
 #print(latestGamePack(133))
-#print(seasonStats(543760,'season','hitting'))
+
 # END
 #print(get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'}))
 
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 #print(getAttendance('133',{'season':2017}, 'dick'))
-setPlayerList()
+#setPlayerList()
+print(vStrikeZoneData(hotColdZones(608369)))
