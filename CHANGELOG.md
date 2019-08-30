@@ -4,6 +4,7 @@
 
 **Merged pull requests:**
 
+- v0.1.1 hotcoldzones introduced [\#16](https://github.com/Thexumaker/PyBaseball/pull/16) ([Thexumaker](https://github.com/Thexumaker))
 - v0.1.0 Major changes [\#15](https://github.com/Thexumaker/PyBaseball/pull/15) ([Thexumaker](https://github.com/Thexumaker))
 - v0.0.9 Simplified code for getting fields and hydrations [\#14](https://github.com/Thexumaker/PyBaseball/pull/14) ([Thexumaker](https://github.com/Thexumaker))
 - Added stats capability as well as fixed bugs in get method [\#13](https://github.com/Thexumaker/PyBaseball/pull/13) ([Thexumaker](https://github.com/Thexumaker))
