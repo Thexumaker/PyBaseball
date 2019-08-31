@@ -1,3 +1,7 @@
+# Install
+Currently not working since I need to move all my code to init.py as well as work on the logistics
+https://pypi.org/project/PyMLBStats/
+
 # PyBaseball
 
 This is a simple example package. You can use
