@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: PyMLBStats
+Version: 0.0.1
+Summary: Python baseball
+Home-page: https://github.com/Thexumaker/PyBaseball/tree/master/pybaseball
+Author: David Xu
+Author-email: thexumaker@berkeley.edu
+License: UNKNOWN
+Description: # PyBaseball
+        
+        This is a simple example package. You can use
+        [Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
+        to write your content.
+        
+        So there's not really a good documentation for the statsapi or really a good wrapper so I'm making once
+        Right now i have the main get function and working on the paths
+        
+        # Working functions
+        
+        * `latestGamePack()`
+        
+        * `getAttendance()`
+        
+        * `getPlayer()`
+        
+        * `get()`
+        
+        # Copyright
+        This package and its author are not affiliated with MLB or any MLB team. This API wrapper interfaces with MLB's Stats API. Use of MLB data is subject to the notice posted at http://gdx.mlb.com/components/copyright.txt.
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown

@@ -2,4 +2,4 @@
 *.db
 /build
 /dist
-/pybaseball.egg-info
+/PyMLBStats.egg-info

@@ -63,5 +63,7 @@ class strikeZone(object):
 
         im = ax.imshow(z,cmap = rvb)
         fig.tight_layout()
+        
+
 
         plt.show()
