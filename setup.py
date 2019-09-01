@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="pybaseball",
+    name="PyMLBStats",
     version="0.0.1",
     author="David Xu",
     author_email="thexumaker@berkeley.edu",

@@ -1,4 +1,3 @@
-
 import requests
 import constants
 import paths
@@ -11,10 +10,7 @@ import sqlite3
 import string
 import pandas as pd
 import StrikeZone
-
 PATHS = paths.PATHS
-
-
 d = {}
 playerList = {}
 
@@ -22,9 +18,6 @@ playerList = {}
 currentDate = date.today()
 
 today = currentDate.strftime('%m/%d/%Y')
-connection = sqlite3.connect("Players.db")
-crsr = connection.cursor()
-
 
 
 
@@ -37,7 +30,7 @@ def setPlayerList(sport = 1, season = [2019]):
         players = get('sports_players', {'ver': 'v1', 'season': y, 'sportId': sport })
 
         for dict in players.get('people'):
-            print(dict)
+
             for k,v in dict.items():
 
                 if k == 'id':
@@ -49,15 +42,9 @@ def setPlayerList(sport = 1, season = [2019]):
                         v = v.replace("'", '')
 
                     last_Name = v
-            playerList[id] = [first_name, last_Name]
-            sql_command = """INSERT INTO contacts VALUES ({},'{}', '{}');""".format(id,first_name,last_Name)
-            print(sql_command)
-            crsr.execute(sql_command)
-    # If we skip this, nothing will be saved in the database.
-    connection.commit()
+            playerList["{} {}".format(first_name, last_Name)] = id
 
-    # close the connection
-    connection.close()
+
     return playerList
 
 
@@ -109,6 +96,8 @@ def vStrikeZoneData(data):
 
     sz.updateStrikeZone(zone,zoneData)
     sz.visualize()
+
+
 
 
 
@@ -192,12 +181,26 @@ def getAttendance(Id, params, fields):
         qP.update({k: v})
     result = get('attendance', qP)
     return result
+
+
 def getPlayerInfo(name):
-    """A function to return the age, position and player id of a given player name"""
-    r = []
-    ids = players[name]
-    r_url = get('people', {'personIds': ids,
-                           'ver': 'v1'})
+    """A function to return the age, position and player id of a given player name
+    >>>getPlayerInfo('Marcus Semien')
+    {'copyright': 'Copyright 2019 MLB Advanced Media, L.P.  Use of any content on this page acknowledges agreem
+ent to the terms posted here http://gdx.mlb.com/components/copyright.txt', 'people': [{'id': 543760, 'fullN
+ame': 'Marcus Semien', 'link': '/api/v1/people/543760', 'firstName': 'Marcus', 'lastName': 'Semien', 'prima
+ryNumber': '10', 'birthDate': '1990-09-17', 'currentAge': 28, 'birthCity': 'San Francisco', 'birthStateProv
+ince': 'CA', 'birthCountry': 'USA', 'height': "6' 0", 'weight': 195, 'active': True, 'primaryPosition': {'c
+ode': '6', 'name': 'Shortstop', 'type': 'Infielder', 'abbreviation': 'SS'}, 'useName': 'Marcus', 'middleNam
+e': 'Andrew', 'boxscoreName': 'Semien', 'nickName': 'Simmy', 'gender': 'M', 'isPlayer': True, 'isVerified':
+ True, 'draftYear': 2011, 'pronunciation': 'SIM-ee-ehn', 'mlbDebutDate': '2013-09-04', 'batSide': {'code':
+'R', 'description': 'Right'}, 'pitchHand': {'code': 'R', 'description': 'Right'}, 'nameFirstLast': 'Marcus
+Semien', 'nameSlug': 'marcus-semien-543760', 'firstLastName': 'Marcus Semien', 'lastFirstName': 'Semien, Ma
+rcus', 'lastInitName': 'Semien, M', 'initLastName': 'M Semien', 'fullFMLName': 'Marcus Andrew Semien', 'ful
+lLFMName': 'Semien, Marcus Andrew', 'strikeZoneTop': 3.37, 'strikeZoneBottom': 1.64}]}"""
+
+    ids = playerList.get(name)
+    r_url = get('people', {'personId': ids, 'ver': 'v1'})
     #constants.BASE_URL + "/people/{}".format(ids)
 
     return r_url
@@ -214,21 +217,23 @@ def get(path, dict_params):
     fields = []
     hydrations = []
     first_field = True
-    print(dict_params)
+
+
     # search through the dictionary of params, categorize what kind of parameter, make sure they exist and then replace them in the url
     for k, v in dict_params.items():
+
         if curr['path_params'].get(k):
             path_params.update({k: str(v)})
-            print(path_params)
+
         elif k in curr['query_params']:
             query_params.update({k: v})
             # DEBUG RIGHT HERe
         else:
             break
-    print(query_params)
+
     for s, t in path_params.items():
         url = url.replace("{{{}}}".format(s), t)
-    print("Working through here")
+
     while url.find('{') != -1:
         # so if u put in the wrong shit it repeats endlessly
         print(url)
@@ -289,7 +294,7 @@ def get(path, dict_params):
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 
 # `print(getInfo("Matt Chapman"))
-#print(GenerateWpaGraph(567010))
+#print(GenerateWpaGraph(567010))``
 
 # IMPORTNAT
 #print(getPlayerInfo("Justin Verlander"))
@@ -301,4 +306,7 @@ def get(path, dict_params):
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 #print(getAttendance('133',{'season':2017}, 'dick'))
 #setPlayerList()
-print(vStrikeZoneData(hotColdZones(608369)))
+#print(vStrikeZoneData(hotColdZones(608369)))
+setPlayerList()
+print(getPlayerInfo('Marcus Semien'))
+help(getPlayerInfo)
