@@ -16,6 +16,13 @@ to write your content.
 So there's not really a good documentation for the statsapi or really a good wrapper so I'm making once
 Right now i have the main get function and working on the paths
 
+# Classes
+* Strikezone 
+  *Name
+  *ZoneData
+  *Functions
+    *Visualize
+
 # Working functions
 
 * `latestGamePack()`
