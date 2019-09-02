@@ -18,9 +18,9 @@ Right now i have the main get function and working on the paths
 
 # Classes
 * Strikezone 
-  *Name
-  *ZoneData
-  *Functions
+  * Name
+  * ZoneData
+  * Functions
     *Visualize
 
 # Working functions
