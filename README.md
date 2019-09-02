@@ -1,3 +1,8 @@
+# ToDo
+* Fix documentation for code, particularily get methods 
+* provide more documentation for Strikezone class
+* implement player class
+
 # Install
 Currently not working since I need to move all my code to init.py as well as work on the logistics
 https://pypi.org/project/PyMLBStats/
