@@ -65,7 +65,7 @@ def boxscore():
     """ Generate boxscore"""
 def linescore():
     """Generate linescore"""
-def hotColdZones(playerID, group = 'hitting'):
+def hotColdZones(playerID, group = 'hitting', zoneType = 'onBasePlusSlugging'):
     #find his current team and if he's a hitter or pitcher then
     """Not sure if this only works for current year or if i can get year by year data
     This should only be his batting averages, etc and then give a hot/cold color
@@ -73,43 +73,26 @@ def hotColdZones(playerID, group = 'hitting'):
     Also the graphs shouldnt be returned as its a visual tool, maybe they could be saved but for data science purposes it should be returning a list or dictionary of results """
     zoneData = get('person',{ 'ver':'v1' , 'personId':playerID,'hydrate':['stats(group={},type={})'.format(group,'hotColdZones'),'currentTeam']})
     zonesData = {}
+    sz = StrikeZone.strikeZone('{} {}'.format(playerID, zoneType))
     for stat in zoneData.get('people')[0].get('stats'):
         for types in stat.get('splits'):
             zonesData[types.get('stat')['name']] = types.get('stat')['zones']
             #create a list of Zones, up to 9
             #using that list of zones make a strike zone
             #make a list of strike zone data for each value
-    return zonesData
-
-def vStrikeZoneData(data):
-    sz = StrikeZone.strikeZone('dick')
+    sz.zoneData = zonesData
     zone = [1,2,3,4,5,6,7,8,9]
-    zoneData = []
-    for k,v in data.items():
-        if k == 'sluggingPercentage':
-            for i in v:
-
-                if int(i.get('zone')) > 9:
+    zoneLData = []
+    for k,v in zonesData.items():
+        if k == zoneType:
+            for zData in v:
+                if int(zData.get('zone')) > 9:
                     break
                 else:
-                    zoneData.append(float(i.get('value')))
+                    zoneLData.append(float(zData.get('value')))
 
-    sz.updateStrikeZone(zone,zoneData)
-    sz.visualize()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    sz.updateStrikeZone(zone,zoneLData)
+    return sz
 
 def advancedStats():
     """Still not sure how to proceed however for spin rate and what stats to put in per player, also have to fix
@@ -306,7 +289,10 @@ def get(path, dict_params):
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 #print(getAttendance('133',{'season':2017}, 'dick'))
 #setPlayerList()
-#print(vStrikeZoneData(hotColdZones(608369)))
-setPlayerList()
-print(getPlayerInfo('Marcus Semien'))
-help(getPlayerInfo)
+
+#setPlayerList()
+#print(getPlayerInfo('Marcus Semien'))
+#help(getPlayerInfo)
+testSz = hotColdZones(608369,'hitting', 'onBasePlusSlugging')
+testSz.visualize()
+print(testSz.zoneData)
