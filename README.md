@@ -21,7 +21,7 @@ Right now i have the main get function and working on the paths
   * Name
   * ZoneData
   * Functions
-    *Visualize
+    * Visualize
 
 # Working functions
 
