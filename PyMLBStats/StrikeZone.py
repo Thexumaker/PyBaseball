@@ -17,23 +17,14 @@ def make_colormap(seq):
             cdict['blue'].append([item, b1, b2])
     return mcolors.LinearSegmentedColormap('CustomMap', cdict)
 
-class Zone:
-    def __init__(self,zone,color,temp,value):
-
-        self.zone = zone #int
-        self.color = color #rgb value
-        self.temp = temp #string
-        self.value = value #int
-    def get():
-        return [self.zone,self.color,self.temp,self.value]
 
 class strikeZone(object):
     def __init__(self,name):
         self.name = name
         self.strikezone = dict.fromkeys([1,2,3,4,5,6,7,8,9])
+        self.zoneData
     def updateStrikeZone(self,Zone, Zonedata):
         d = dict(zip(Zone,Zonedata))
-
         self.strikezone.update(d)
     def visualize(self):
 
@@ -63,7 +54,7 @@ class strikeZone(object):
 
         im = ax.imshow(z,cmap = rvb)
         fig.tight_layout()
-        
+
 
 
         plt.show()
