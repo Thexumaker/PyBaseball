@@ -22,7 +22,7 @@ class strikeZone(object):
     def __init__(self,name):
         self.name = name
         self.strikezone = dict.fromkeys([1,2,3,4,5,6,7,8,9])
-        self.zoneData
+        self.zoneData = {}
     def updateStrikeZone(self,Zone, Zonedata):
         d = dict(zip(Zone,Zonedata))
         self.strikezone.update(d)
