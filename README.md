@@ -17,11 +17,18 @@ So there's not really a good documentation for the statsapi or really a good wra
 Right now i have the main get function and working on the paths
 
 # Classes
+* Person
+* Player(Person)
+  * Functions
+    * seasonStats()
+    * hotColdZones()
 * Strikezone 
   * Name
   * ZoneData
   * Functions
-    * Visualize
+    * Visualize(self)
+    * updateStrikeZone(self,Zone, Zonedata) 
+    * strikezoneData(self)
 
 # Working functions
 
