@@ -9,7 +9,8 @@ import numpy as np
 import sqlite3
 import string
 import pandas as pd
-import StrikeZone
+from Models import StrikeZone
+from Models import Person
 PATHS = paths.PATHS
 d = {}
 playerList = {}
@@ -65,6 +66,11 @@ def boxscore():
     """ Generate boxscore"""
 def linescore():
     """Generate linescore"""
+def Player(id):
+    rData = get('person', {'personId': id})
+    pModel = Person.Player(rData)
+    return pModel
+
 def hotColdZones(playerID, group = 'hitting', zoneType = 'onBasePlusSlugging'):
     #find his current team and if he's a hitter or pitcher then
     """Not sure if this only works for current year or if i can get year by year data
@@ -126,6 +132,7 @@ def GenerateWpaGraph(GamePck):
     ax.autoscale_view()
     plt.show()
     return homeL
+
 
 def seasonStats(personId,type = 'gameLog',group = 'hitting'):
 
@@ -225,10 +232,13 @@ def get(path, dict_params):
         param = url[start_index:end_index + 1]
         print(url)
         param_without_brackets = url[start_index + 1:end_index]
-        if param_without_brackets in curr['required_params']:
-            url = url.replace(param, curr.get('path_params').get(param_without_brackets)['default'])
-        elif param_without_brackets not in curr['required_params']:
-            url = url.replace("/" + param, '')
+        for i in curr['required_params']:
+            if param_without_brackets in i:
+                print('hi')
+                url = url.replace(param, curr.get('path_params').get(param_without_brackets)['default'])
+                path_params.update({param_without_brackets :curr.get('path_params').get(param_without_brackets)['default']})
+            elif param_without_brackets not in curr['required_params']:
+                url = url.replace("/" + param, '')
 
 
     if len(query_params) > 0:
@@ -293,6 +303,8 @@ def get(path, dict_params):
 #setPlayerList()
 #print(getPlayerInfo('Marcus Semien'))
 #help(getPlayerInfo)
-testSz = hotColdZones(608369,'hitting', 'onBasePlusSlugging')
-testSz.visualize()
-print(testSz.zoneData)
+#testSz = hotColdZones(608369,'hitting', 'onBasePlusSlugging')
+#testSz.visualize()
+#print(testSz.zoneData)
+Marcus = Player(543760)
+print(Marcus.primaryPosition)
