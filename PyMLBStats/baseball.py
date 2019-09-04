@@ -1,6 +1,6 @@
 import requests
 import constants
-import paths
+import endpoints
 from datetime import datetime, date
 from matplotlib.pylab import plt #load plot library
 from matplotlib.collections import LineCollection
@@ -11,7 +11,7 @@ import string
 import pandas as pd
 from Models import StrikeZone
 from Models import Person
-PATHS = paths.PATHS
+ENDPOINTS = endpoints.ENDPOINTS
 d = {}
 playerList = {}
 
@@ -70,7 +70,7 @@ def Player(id):
     rData = get('person', {'personId': id})
     pModel = Person.Player(rData)
     return pModel
-
+#Move into player Models
 def hotColdZones(playerID, group = 'hitting', zoneType = 'onBasePlusSlugging'):
     #find his current team and if he's a hitter or pitcher then
     """Not sure if this only works for current year or if i can get year by year data
@@ -200,7 +200,7 @@ def get(path, dict_params):
     """Main get function that given a dictionary of inputs and a path will return the correct results
     Example:
     get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'})"""
-    curr = PATHS.get(path)
+    curr = ENDPOINTS.get(path)
     url = curr['url']
     path_params = {}
     query_params = {}

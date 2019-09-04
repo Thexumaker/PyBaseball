@@ -3,7 +3,7 @@ BASE_URL = "http://statsapi.mlb.com/api"
 # takes time to load, but paths /path = number, players is a little weird where u only write hte number
 # querys usually ? and then same format, nust have to work thru it
 # keep the functions i made i dont feel like fixing it and it really doesnt need to be put in
-PATHS = {
+ENDPOINTS = {
     "attendance": {
         'url': BASE_URL + "/{ver}/attendance",
         "path_params": {
@@ -291,7 +291,7 @@ PATHS = {
         'required_params': [['ver']]
     },
     'teams_history':                {
-        'url': BASE_URL + '{ver}/teams/history',
+        'url': BASE_URL + '/{ver}/teams/history',
         'path_params':  {
             'ver':      {
 
@@ -664,15 +664,11 @@ PATHS = {
         'url': BASE_URL + '/{ver}/game/{gamePk}/winProbability',
         'path_params':  {
             'ver':  {
-
                 'default': 'v1',
-
                 'required': True
             },
             'gamePk': {
-
                 'default': None,
-
                 'required': True
             }
         },
@@ -684,15 +680,11 @@ PATHS = {
         'url': BASE_URL + '/{ver}/game/{gamePk}/boxscore',
         'path_params':  {
             'ver':  {
-
                 'default': 'v1',
-
                 'required': True
             },
             'gamePk': {
-
                 'default': '',
-
                 'required': True
             }
         },

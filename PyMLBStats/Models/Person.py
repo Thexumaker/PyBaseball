@@ -10,4 +10,5 @@ class Player(Person):
     def __init__(self, rData):
         super().__init__(rData)
         basicInfoPath = rData.get('people')[0]
+        self.primaryNumber = basicInfoPath.get('primaryNumber')
         self.primaryPosition = basicInfoPath.get('primaryPosition')['name']
