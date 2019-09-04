@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.colors as mcolors
+from Models.backend import baseball
+
 def make_colormap(seq):
     """Return a LinearSegmentedColormap
     seq: a sequence of floats and RGB-tuples. The floats should be increasing
@@ -26,6 +28,8 @@ class strikeZone(object):
     def updateStrikeZone(self,Zone, Zonedata):
         d = dict(zip(Zone,Zonedata))
         self.strikezone.update(d)
+    def strikezoneData(self):
+        return self.zoneData
     def visualize(self):
 
         c = mcolors.ColorConverter().to_rgb
@@ -42,8 +46,6 @@ class strikeZone(object):
             row2.append(self.strikezone.get(i))
         for i in range(7,10):
             row3.append(self.strikezone.get(i))
-
-
 
         z = np.array([row1, row2, row3])
         fig, ax = plt.subplots()
