@@ -5,9 +5,13 @@ import Models.backend.endpoints as endpointss
 from Models import StrikeZone
 from Models import Person
 from Models import Sport
+from Models import Team
 from datetime import datetime, date
 ENDPOINTS = endpointss.ENDPOINTS
 currentDate = date.today()
+
+
+
 
 today = currentDate.strftime('%m/%d/%Y')
 year = datetime.today().year
@@ -30,11 +34,20 @@ def Sports(id = 1, years = [year]):
     sportO = Sport.Sport(rData, years)
     sportO.setPlayerList()
     return sportO
+def Teams(id):
+    rData = baseballs.get('teams', {'teamId': id})
+    pModel = Team.Team(rData)
+    return pModel
 
 
-mlb = Sports(1)
+
+mlb = Sports(1,[2019])
+
+royals = Teams(118)
+print(royals.roster)
+
+
 
 #baseball.hotColdZones(Marcus)
 #print(Marcus.strikeZone.visualize())
 #print(Marcus.hotColdZones().visualize())
-print(mlb.playerList)

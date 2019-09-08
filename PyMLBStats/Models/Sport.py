@@ -1,4 +1,4 @@
-from Models import *
+from Models import League
 from Models.backend import baseball
 
 class Sport(object):
@@ -12,6 +12,7 @@ class Sport(object):
         self.sortOrder = paths.get('sortOrder')
         self.years = years
         self.playerList = {}
+        self.leagues = self.setLeagues()
         self.playersRawData = None
     def setPlayerList(self, season = [2019]):
         """Returns a list of all active players within a sport and list of years
@@ -34,3 +35,13 @@ class Sport(object):
 
                         last_Name = v
                 self.playerList["{} {}".format(first_name, last_Name)] = id
+                #We could create a giant database of player objects instead of just a list?
+    def setLeagues(self):
+        rL = []
+        leagues = baseball.get('league', {'ver': 'v1'})
+        for l in leagues.get('leagues'):
+            if l.get('sport') != None:
+                if l.get('sport')['id'] == 1:
+                    l = League.League(l)
+                    rL.append(l)
+        return rL

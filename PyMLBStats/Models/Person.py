@@ -29,16 +29,30 @@ class Player(Person):
         self.draftYear = basicInfoPath.get('draftYear')
         self.batSideC = basicInfoPath.get('batSide')['code']
         self.batSideD = basicInfoPath.get('batSide')['description']
+
         self.strikeZone = None
-    def seasonStats(self,type = 'gameLog',group = 'hitting'):
+        self.group = self.setGroup()
+        self.team = self.setTeam()
+    def setGroup(self):
+        if self.primaryPositionAbbrev in ['SS', '3B', '2B','1B','C','CF','LF','RF']:
+            r = 'hitting'
+            return r
+        else:
+            r = 'pitching'
+            self.group = r
+    def setTeam(self):
+        data = baseball.get('person',{ 'ver':'v1' , 'personId':self.id,'hydrate':['currentTeam']} )
+        return data.get('people')[0].get('currentTeam')
+
+
+
+    def seasonStats(self,type = 'gameLog'):
 
         """Returns a player's season/career stats and wether it's hitting or pitching or fielding
             fix and improve this later"""
 
-        #playerInfo = get('people', {'personIds':personId})
-
-
-        teamStats = baseball.get('person',{ 'ver':'v1' , 'personId':self.id,'hydrate':['stats(group={},type={})'.format(group,type),'currentTeam']})
+        #playerInfo = get('people', {'personIds':personId}
+        teamStats = baseball.get('person',{ 'ver':'v1' , 'personId':self.id,'hydrate':['stats(group={},type={})'.format(self.group,type),'currentTeam']})
         return teamStats
         #iterate of stats and find the right player id
         #career stats broken

@@ -1,5 +1,5 @@
 import requests
-import endpoints
+from Models.backend import endpoints
 from datetime import datetime, date
 from matplotlib.pylab import plt #load plot library
 from matplotlib.collections import LineCollection
@@ -10,8 +10,6 @@ import string
 import pandas as pd
 
 ENDPOINTS = endpoints.ENDPOINTS
-d = {}
-playerList = {}
 
 
 def get(path, dict_params):

@@ -7,10 +7,10 @@ with open("README.md", "r") as fh:
 
 setup(
     name="PyMLBStats",
-    version="0.0.1",
+    version="0.2.0",
     author="David Xu",
     author_email="thexumaker@berkeley.edu",
-    description="Python baseball",
+    description="Python wrapper for baseball",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Thexumaker/PyBaseball/tree/master/pybaseball",

@@ -285,7 +285,11 @@ ENDPOINTS = {
                 'default': 'v1',
 
                 'required': True
-            }
+            },
+        'teamId': {
+                'default': None,
+                'required': False
+        }
         },
         'query_params': ['season', 'activeStatus', 'leagueIds', 'sportIds', 'gameType', 'fields', 'hydrate'],
         'required_params': [['ver']]
@@ -423,7 +427,7 @@ ENDPOINTS = {
             }
         },
         'query_params': ['rosterType', 'season', 'date', 'hydrate', 'fields'],
-        'required_params': [['ver'], ['rosterType', 'season']]
+        'required_params': [['ver']]
     },
 
     'people_changes':               {
@@ -874,7 +878,7 @@ ENDPOINTS = {
             }
         },
         'query_params': ['sportId', 'leagueIds', 'seasons', 'fields'],
-        'required_params': [['sportId'], ['leagueIds']]
+        'required_params': [[]]
     },
     'league_allStarBallot':         {
         'url': BASE_URL + '/{ver}/league/{leagueId}/allStarBallot',
