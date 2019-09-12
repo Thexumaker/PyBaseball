@@ -6,4 +6,4 @@ class League(object):
         self.name = rData.get('name')
         self.abbreviation = rData.get('abbreviation')
         self.numTeams = rData.get('numTeams')
-        self.teams
+        #self.teams

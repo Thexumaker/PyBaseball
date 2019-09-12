@@ -35,7 +35,7 @@ def Sports(id = 1, years = [year]):
     sportO.setPlayerList()
     return sportO
 def Teams(id):
-    rData = baseballs.get('teams', {'teamId': id})
+    rData = baseballs.get('teams', {'ver': 'v1', 'teamId': id})
     pModel = Team.Team(rData)
     return pModel
 

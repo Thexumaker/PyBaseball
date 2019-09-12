@@ -278,7 +278,7 @@ ENDPOINTS = {
         'required_params': [['ver']]
     },
     'teams':                        {
-        'url': BASE_URL + '/{ver}/teams',
+        'url': BASE_URL + '/{ver}/teams/{teamId}',
         'path_params':  {
             'ver':      {
 

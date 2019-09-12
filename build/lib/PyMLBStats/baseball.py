@@ -1,6 +1,7 @@
+
 import requests
 import constants
-import endpoints
+import paths
 from datetime import datetime, date
 from matplotlib.pylab import plt #load plot library
 from matplotlib.collections import LineCollection
@@ -9,9 +10,11 @@ import numpy as np
 import sqlite3
 import string
 import pandas as pd
-from Models import StrikeZone
-from Models import Person
-ENDPOINTS = endpoints.ENDPOINTS
+import StrikeZone
+
+PATHS = paths.PATHS
+
+
 d = {}
 playerList = {}
 
@@ -19,18 +22,11 @@ playerList = {}
 currentDate = date.today()
 
 today = currentDate.strftime('%m/%d/%Y')
+connection = sqlite3.connect("Players.db")
+crsr = connection.cursor()
 
 
-def Player(id):
-    """Main function to generate a Player object using a playerId
-    Returns a Player object
-    >>>Marcus_Semien = Player(543760)
-    >>>print(type(Marcus_Semien))
-    <class 'Models.Person.Player'>
-    """
-    rData = get('person', {'personId': id})
-    pModel = Person.Player(rData)
-    return pModel
+
 
 """ Lets say i want to get spinrate i'm gonna have to go game by game thru hydrations and calculate"""
 def setPlayerList(sport = 1, season = [2019]):
@@ -41,7 +37,7 @@ def setPlayerList(sport = 1, season = [2019]):
         players = get('sports_players', {'ver': 'v1', 'season': y, 'sportId': sport })
 
         for dict in players.get('people'):
-
+            print(dict)
             for k,v in dict.items():
 
                 if k == 'id':
@@ -53,9 +49,15 @@ def setPlayerList(sport = 1, season = [2019]):
                         v = v.replace("'", '')
 
                     last_Name = v
-            playerList["{} {}".format(first_name, last_Name)] = id
+            playerList[id] = [first_name, last_Name]
+            sql_command = """INSERT INTO contacts VALUES ({},'{}', '{}');""".format(id,first_name,last_Name)
+            print(sql_command)
+            crsr.execute(sql_command)
+    # If we skip this, nothing will be saved in the database.
+    connection.commit()
 
-
+    # close the connection
+    connection.close()
     return playerList
 
 
@@ -76,8 +78,51 @@ def boxscore():
     """ Generate boxscore"""
 def linescore():
     """Generate linescore"""
+def hotColdZones(playerID, group = 'hitting'):
+    #find his current team and if he's a hitter or pitcher then
+    """Not sure if this only works for current year or if i can get year by year data
+    This should only be his batting averages, etc and then give a hot/cold color
+    Versus say advancedstats i can get every single pitch and then add it to the strikezone map? but they should be seperate data
+    Also the graphs shouldnt be returned as its a visual tool, maybe they could be saved but for data science purposes it should be returning a list or dictionary of results """
+    zoneData = get('person',{ 'ver':'v1' , 'personId':playerID,'hydrate':['stats(group={},type={})'.format(group,'hotColdZones'),'currentTeam']})
+    zonesData = {}
+    for stat in zoneData.get('people')[0].get('stats'):
+        for types in stat.get('splits'):
+            zonesData[types.get('stat')['name']] = types.get('stat')['zones']
+            #create a list of Zones, up to 9
+            #using that list of zones make a strike zone
+            #make a list of strike zone data for each value
+    return zonesData
 
-#Move into player Models
+def vStrikeZoneData(data):
+    sz = StrikeZone.strikeZone('dick')
+    zone = [1,2,3,4,5,6,7,8,9]
+    zoneData = []
+    for k,v in data.items():
+        if k == 'sluggingPercentage':
+            for i in v:
+
+                if int(i.get('zone')) > 9:
+                    break
+                else:
+                    zoneData.append(float(i.get('value')))
+
+    sz.updateStrikeZone(zone,zoneData)
+    sz.visualize()
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def advancedStats():
     """Still not sure how to proceed however for spin rate and what stats to put in per player, also have to fix
@@ -111,7 +156,6 @@ def GenerateWpaGraph(GamePck):
     ax.autoscale_view()
     plt.show()
     return homeL
-
 
 def seasonStats(personId,type = 'gameLog',group = 'hitting'):
 
@@ -150,26 +194,12 @@ def getAttendance(Id, params, fields):
         qP.update({k: v})
     result = get('attendance', qP)
     return result
-
-
 def getPlayerInfo(name):
-    """A function to return the age, position and player id of a given player name
-    >>>getPlayerInfo('Marcus Semien')
-    {'copyright': 'Copyright 2019 MLB Advanced Media, L.P.  Use of any content on this page acknowledges agreem
-ent to the terms posted here http://gdx.mlb.com/components/copyright.txt', 'people': [{'id': 543760, 'fullN
-ame': 'Marcus Semien', 'link': '/api/v1/people/543760', 'firstName': 'Marcus', 'lastName': 'Semien', 'prima
-ryNumber': '10', 'birthDate': '1990-09-17', 'currentAge': 28, 'birthCity': 'San Francisco', 'birthStateProv
-ince': 'CA', 'birthCountry': 'USA', 'height': "6' 0", 'weight': 195, 'active': True, 'primaryPosition': {'c
-ode': '6', 'name': 'Shortstop', 'type': 'Infielder', 'abbreviation': 'SS'}, 'useName': 'Marcus', 'middleNam
-e': 'Andrew', 'boxscoreName': 'Semien', 'nickName': 'Simmy', 'gender': 'M', 'isPlayer': True, 'isVerified':
- True, 'draftYear': 2011, 'pronunciation': 'SIM-ee-ehn', 'mlbDebutDate': '2013-09-04', 'batSide': {'code':
-'R', 'description': 'Right'}, 'pitchHand': {'code': 'R', 'description': 'Right'}, 'nameFirstLast': 'Marcus
-Semien', 'nameSlug': 'marcus-semien-543760', 'firstLastName': 'Marcus Semien', 'lastFirstName': 'Semien, Ma
-rcus', 'lastInitName': 'Semien, M', 'initLastName': 'M Semien', 'fullFMLName': 'Marcus Andrew Semien', 'ful
-lLFMName': 'Semien, Marcus Andrew', 'strikeZoneTop': 3.37, 'strikeZoneBottom': 1.64}]}"""
-
-    ids = playerList.get(name)
-    r_url = get('people', {'personId': ids, 'ver': 'v1'})
+    """A function to return the age, position and player id of a given player name"""
+    r = []
+    ids = players[name]
+    r_url = get('people', {'personIds': ids,
+                           'ver': 'v1'})
     #constants.BASE_URL + "/people/{}".format(ids)
 
     return r_url
@@ -179,30 +209,28 @@ def get(path, dict_params):
     """Main get function that given a dictionary of inputs and a path will return the correct results
     Example:
     get("config", {'ver': 'v1', 'baseballStats': 'baseballStats'})"""
-    curr = ENDPOINTS.get(path)
+    curr = PATHS.get(path)
     url = curr['url']
     path_params = {}
     query_params = {}
     fields = []
     hydrations = []
     first_field = True
-
-
+    print(dict_params)
     # search through the dictionary of params, categorize what kind of parameter, make sure they exist and then replace them in the url
     for k, v in dict_params.items():
-
         if curr['path_params'].get(k):
             path_params.update({k: str(v)})
-
+            print(path_params)
         elif k in curr['query_params']:
             query_params.update({k: v})
             # DEBUG RIGHT HERe
         else:
             break
-
+    print(query_params)
     for s, t in path_params.items():
         url = url.replace("{{{}}}".format(s), t)
-
+    print("Working through here")
     while url.find('{') != -1:
         # so if u put in the wrong shit it repeats endlessly
         print(url)
@@ -211,13 +239,10 @@ def get(path, dict_params):
         param = url[start_index:end_index + 1]
         print(url)
         param_without_brackets = url[start_index + 1:end_index]
-        for i in curr['required_params']:
-            if param_without_brackets in i:
-                print('hi')
-                url = url.replace(param, curr.get('path_params').get(param_without_brackets)['default'])
-                path_params.update({param_without_brackets :curr.get('path_params').get(param_without_brackets)['default']})
-            elif param_without_brackets not in curr['required_params']:
-                url = url.replace("/" + param, '')
+        if param_without_brackets in curr['required_params']:
+            url = url.replace(param, curr.get('path_params').get(param_without_brackets)['default'])
+        elif param_without_brackets not in curr['required_params']:
+            url = url.replace("/" + param, '')
 
 
     if len(query_params) > 0:
@@ -266,7 +291,7 @@ def get(path, dict_params):
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 
 # `print(getInfo("Matt Chapman"))
-#print(GenerateWpaGraph(567010))``
+#print(GenerateWpaGraph(567010))
 
 # IMPORTNAT
 #print(getPlayerInfo("Justin Verlander"))
@@ -278,10 +303,4 @@ def get(path, dict_params):
 # print(requests.get("http://statsapi.mlb.com/api/v1/people/595014").json())
 #print(getAttendance('133',{'season':2017}, 'dick'))
 #setPlayerList()
-
-#setPlayerList()
-#print(getPlayerInfo('Marcus Semien'))
-#help(getPlayerInfo)
-#testSz = hotColdZones(608369,'hitting', 'onBasePlusSlugging')
-#testSz.visualize()
-#print(testSz.zoneData)
+print(vStrikeZoneData(hotColdZones(608369)))
