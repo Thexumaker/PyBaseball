@@ -9,6 +9,9 @@ from Models import Team
 from datetime import datetime, date
 ENDPOINTS = endpointss.ENDPOINTS
 currentDate = date.today()
+from matplotlib.pylab import plt #load plot library
+from matplotlib.collections import LineCollection
+from matplotlib import colors as mcolors
 
 
 
@@ -30,9 +33,10 @@ def Sports(id = 1, years = [year]):
     """Main function to generate a Sport object using a LeagueId
     Returns a Sport object
     """
+
     rData = baseballs.get('sports', {'sportId': id, 'ver': 'v1'})
     sportO = Sport.Sport(rData, years)
-    sportO.setPlayerList()
+
     return sportO
 def Teams(id):
     rData = baseballs.get('teams', {'ver': 'v1', 'teamId': id})
@@ -41,10 +45,14 @@ def Teams(id):
 
 
 
+
 mlb = Sports(1,[2019])
 
-royals = Teams(118)
-print(royals.roster)
+#royals = Teams(118)
+print(mlb.teams)
+for k,v in mlb.playerList.items():
+    print(k)
+
 
 
 

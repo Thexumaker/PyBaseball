@@ -1,5 +1,6 @@
 from Models import League
 from Models.backend import baseball
+from Models.backend import endpoints
 
 class Sport(object):
     def __init__(self,rData,years):
@@ -11,16 +12,25 @@ class Sport(object):
         self.abbreviation = paths.get('abbreviation')
         self.sortOrder = paths.get('sortOrder')
         self.years = years
-        self.playerList = {}
+        self.teams = self.setTeams()
+        self.playerList = self.setPlayerList()
         self.leagues = self.setLeagues()
-        self.playersRawData = None
+        self.playersRawData = self.setRawplayerData()
+    def setRawplayerData(self,season = [2019]):
+        for y in season:
+
+            players = baseball.get('sports_players', {'ver': 'v1', 'season': y, 'sportId': self.id })
+
+        return players
+
     def setPlayerList(self, season = [2019]):
+        players = baseball.get('sports_players', {'ver': 'v1', 'season': season, 'sportId': self.id })
+
         """Returns a list of all active players within a sport and list of years
         Default is mlb and 2019"""
-
+        pL= {}
         for y in season:
             players = baseball.get('sports_players', {'ver': 'v1', 'season': y, 'sportId': self.id })
-            self.playersRawData = players
             for dict in players.get('people'):
 
                 for k,v in dict.items():
@@ -34,7 +44,8 @@ class Sport(object):
                             v = v.replace("'", '')
 
                         last_Name = v
-                self.playerList["{} {}".format(first_name, last_Name)] = id
+                pL["{} {}".format(first_name, last_Name)] = id
+        return pL
                 #We could create a giant database of player objects instead of just a list?
     def setLeagues(self):
         rL = []
@@ -45,3 +56,6 @@ class Sport(object):
                     l = League.League(l)
                     rL.append(l)
         return rL
+    def setTeams(self):
+        teams = baseball.get('teams', {'ver' : 'v1', 'sportIds': self.id})
+        return teams

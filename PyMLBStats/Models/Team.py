@@ -1,5 +1,8 @@
 from Models.backend import baseball
 from Models import Person
+from datetime import datetime, date
+currentDate = date.today()
+today = currentDate.strftime('%m/%d/%Y')
 class Team(object):
     def __init__(self, rData):
         rData = rData.get('teams')[0]
@@ -20,3 +23,10 @@ class Team(object):
         rData = baseball.get('team_roster', {'ver': 'v1', 'teamId': self.id})
         #fix later
         return rData
+    def latestGamePack(self,date = today):
+        """Returns latest game pack number for a specified team
+        >>>latestGamePack(117)
+        565664
+        """
+        lgr= baseballs.get('schedule', {'ver':'v1', 'sportId':1, 'date':date, 'teamId':self.id, 'fields':['dates','games','gamePk'] })
+        return lgr['dates'][0]['games'][0]['gamePk']
